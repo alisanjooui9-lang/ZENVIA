@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#073d32">
+<title>سبد خرید | ZENVIA</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#f5f8f6;color:#173b32;font-family:Tahoma,Arial,sans-serif}
+header{background:#073d32;color:white;padding:18px 6%;display:flex;justify-content:space-between;align-items:center;gap:15px}
+.logo{font-size:25px;font-weight:bold;letter-spacing:2px;color:#d8bd79;text-decoration:none}
+nav{display:flex;gap:18px;flex-wrap:wrap;font-size:13px}
+nav a{color:white;text-decoration:none}
+main{max-width:1000px;margin:35px auto;padding:0 16px}
+h1{font-size:25px}
+.layout{display:grid;grid-template-columns:1fr 300px;gap:20px;align-items:start}
+.items,.summary{background:white;border-radius:18px;padding:20px;box-shadow:0 8px 30px #173b3210}
+.item{display:grid;grid-template-columns:95px 1fr auto;gap:15px;align-items:center;padding:15px 0;border-bottom:1px solid #edf1ee}
+.item img{width:95px;height:95px;object-fit:contain;background:#f2f5f3;border-radius:12px}
+.name{font-weight:bold;line-height:1.8}
+.price{color:#08785b;font-size:14px;margin-top:8px}
+.controls{display:flex;align-items:center;gap:9px;margin-top:10px}
+.controls button,.remove{border:0;border-radius:8px;padding:8px 12px;cursor:pointer;font-family:inherit}
+.controls button{background:#e8f2ed;color:#08785b}
+.remove{background:#fff0ed;color:#c44d39}
+.summary h2{font-size:18px}
+.total{font-size:23px;font-weight:bold;color:#08785b;margin:20px 0}
+.checkout{width:100%;border:0;background:#08785b;color:white;padding:15px;border-radius:11px;font-family:inherit;font-size:14px;cursor:pointer}
+.checkout:disabled{background:#aab8b1;cursor:not-allowed}
+.note{font-size:12px;line-height:2;color:#77857e;margin-top:15px}
+.empty{text-align:center;padding:50px 15px;line-height:2;color:#718078}
+.empty a{display:inline-block;color:#08785b;margin-top:15px}
+@media(max-width:700px){header{align-items:flex-start;flex-direction:column}.layout{grid-template-columns:1fr}.item{grid-template-columns:75px 1fr}.item img{width:75px;height:75px}.remove{grid-column:2;justify-self:start}}
+</style>
+</head>
+<body>
+
+<header>
+<a class="logo" href="index.html">ZENVIA</a>
+<nav>
+<a href="index.html">صفحه اصلی</a>
+<a href="shop.html">فروشگاه</a>
+<a href="orders.html">سفارش‌ها</a>
+<a href="login.html">حساب کاربری</a>
+</nav>
+</header>
+
+<main>
+<h1>سبد خرید شما</h1>
+<div id="content">در حال بارگذاری سبد خرید...</div>
+</main>
+
+<script>
+const CART_KEY="zenvia_cart";
+const content=document.getElementById("content");
+
+function getCart(){
+  try{
+    const value=JSON.parse(localStorage.getItem(CART_KEY)||"[]");
+    return Array.isArray(value)?value:[];
+  }catch{
+    return [];
+  }
+}
+
+function saveCart(cart){
+  localStorage.setItem(CART_KEY,JSON.stringify(cart));
+}
+
+function money(value){
+  return Number(value).toLocaleString("fa-IR")+" تومان";
+}
+
+function render(){
+  const cart=getCart();
+
+  if(cart.length===0){
+    content.innerHTML=`
+      <div class="items empty">
+        سبد خرید شما خالی است.
+        <br>
+        <a href="shop.html">مشاهده محصولات فروشگاه</a>
+      </div>`;
+    return;
+  }
+
+  const layout=document.createElement("div");
+  layout.className="layout";
+
+  const items=document.createElement("section");
+  items.className="items";
+
+  let total=0;
+
+  cart.forEach((product,index)=>{
+    const quantity=Math.max(1,Number(product.quantity)||1);
+    const price=Math.max(0,Number(product.price)||0);
+    total+=price*quantity;
+
+    const row=document.createElement("article");
+    row.className="item";
+
+    const img=document.createElement("img");
+    img.src=product.image_url||"";
+    img.alt=product.name||"محصول";
+    img.onerror=()=>{img.style.visibility="hidden";};
+
+    const info=document.createElement("div");
+
+    const name=document.createElement("div");
+    name.className="name";
+    name.textContent=product.name||"محصول بدون نام";
+
+    const priceText=document.createElement("div");
+    priceText.className="price";
+    priceText.textContent=money(price);
+
+    const controls=document.createElement("div");
+    controls.className="controls";
+
+    const minus=document.createElement("button");
+    minus.textContent="−";
+    minus.addEventListener("click",()=>changeQuantity(index,-1));
+
+    const count=document.createElement("span");
+    count.textContent=quantity.toLocaleString("fa-IR");
+
+    const plus=document.createElement("button");
+    plus.textContent="+";
+    plus.addEventListener("click",()=>changeQuantity(index,1));
+
+    controls.append(minus,count,plus);
+    info.append(name,priceText,controls);
+
+    const remove=document.createElement("button");
+    remove.className="remove";
+    remove.textContent="حذف";
+    remove.addEventListener("click",()=>removeProduct(index));
+
+    row.append(img,info,remove);
+    items.appendChild(row);
+  });
+
+  const summary=document.createElement("aside");
+  summary.className="summary";
+
+  const title=document.createElement("h2");
+  title.textContent="خلاصه سفارش";
+
+  const count=document.createElement("div");
+  count.textContent="تعداد محصولات: "+cart.reduce((sum,p)=>sum+(Number(p.quantity)||1),0).toLocaleString("fa-IR");
+
+  const totalText=document.createElement("div");
+  totalText.className="total";
+  totalText.textContent=money(total);
+
+  const checkout=document.createElement("button");
+  checkout.className="checkout";
+  checkout.textContent="ادامه و ثبت سفارش";
+  checkout.addEventListener("click",()=>{
+    location.href="orders.html";
+  });
+
+  const note=document.createElement("div");
+  note.className="note";
+  note.textContent="مبلغ نهایی، هزینه ارسال و موجودی محصولات هنگام ثبت سفارش باید از سرور بررسی شوند.";
+
+  summary.append(title,count,totalText,checkout,note);
+  layout.append(items,summary);
+  content.replaceChildren(layout);
+}
+
+function changeQuantity(index,amount){
+  const cart=getCart();
+  if(!cart[index])return;
+
+  const next=(Number(cart[index].quantity)||1)+amount;
+  if(next<1)return;
+
+  cart[index].quantity=next;
+  saveCart(cart);
+  render();
+}
+
+function removeProduct(index){
+  const cart=getCart();
+  cart.splice(index,1);
+  saveCart(cart);
+  render();
+}
+
+render();
+</script>
+</body>
+</html>
