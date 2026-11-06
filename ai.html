@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#073d32">
+<title>دستیار هوشمند زنویا</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#f3f7f4;color:#173b32;font-family:Tahoma,Arial,sans-serif}
+header{background:#073d32;color:white;padding:17px 5%;display:flex;justify-content:space-between;align-items:center;gap:15px}
+.logo{font-size:25px;font-weight:bold;letter-spacing:2px;color:#d8bd79;text-decoration:none}
+nav{display:flex;gap:18px;flex-wrap:wrap;font-size:13px}
+nav a{color:white;text-decoration:none}
+main{max-width:850px;margin:30px auto;padding:0 15px}
+.intro{text-align:center;padding:25px 10px}
+.intro h1{font-size:25px}
+.intro p{font-size:13px;color:#718078;line-height:2}
+.chat{background:white;border-radius:20px;overflow:hidden;box-shadow:0 10px 35px #173b3210}
+.chat-header{background:#0b5946;color:white;padding:18px}
+.chat-header strong{font-size:16px}
+.chat-header p{font-size:12px;color:#d3e7dc;margin-bottom:0}
+.messages{height:430px;overflow-y:auto;padding:18px;background:#fbfdfb}
+.msg{max-width:85%;padding:13px 15px;border-radius:15px;margin:12px 0;font-size:13px;line-height:2;white-space:pre-wrap}
+.bot{background:#eaf3ed;margin-left:auto}
+.user{background:#08785b;color:white;margin-right:auto}
+.products{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:12px 0}
+.product{border:1px solid #e5eee7;border-radius:13px;padding:12px;background:white}
+.product img{width:100%;height:130px;object-fit:contain;background:#f4f7f4;border-radius:9px}
+.product strong{display:block;margin:10px 0;font-size:13px;line-height:1.8}
+.product p{font-size:12px;color:#718078;line-height:1.8}
+.price{font-weight:bold;color:#08785b;font-size:15px}
+.product a{display:block;text-align:center;background:#08785b;color:white;text-decoration:none;padding:10px;border-radius:9px;font-size:12px;margin-top:10px}
+.input-area{display:flex;gap:9px;padding:14px;border-top:1px solid #edf1ee}
+.input-area input{flex:1;min-width:0;border:1px solid #dce6df;border-radius:11px;padding:14px;font-family:inherit;outline:none}
+.input-area button{border:0;border-radius:11px;background:#08785b;color:white;padding:0 20px;font-family:inherit;cursor:pointer}
+.input-area button:disabled{opacity:.5}
+.suggestions{display:flex;gap:8px;flex-wrap:wrap;padding:0 14px 14px}
+.suggestions button{border:1px solid #dce9df;background:#f5faf6;color:#08785b;border-radius:20px;padding:9px 12px;font-family:inherit;font-size:11px;cursor:pointer}
+.note{text-align:center;font-size:11px;color:#829087;line-height:2;padding:15px}
+@media(max-width:600px){header{align-items:flex-start;flex-direction:column}.products{grid-template-columns:1fr}.messages{height:400px}.msg{max-width:95%}}
+</style>
+</head>
+<body>
+
+<header>
+<a class="logo" href="index.html">ZENVIA</a>
+<nav>
+<a href="index.html">خانه</a>
+<a href="shop.html">فروشگاه</a>
+<a href="cart.html">سبد خرید</a>
+</nav>
+</header>
+
+<main>
+<section class="intro">
+<h1>دستیار خرید هوشمند زنویا</h1>
+<p>محصول موردنظرت را بگو تا محصولات موجود فروشگاه را برایت پیدا کنم.</p>
+</section>
+
+<section class="chat">
+<div class="chat-header">
+<strong>ZENVIA AI</strong>
+<p>دستیار هوشمند انتخاب محصولات</p>
+</div>
+
+<div class="messages" id="messages">
+<div class="msg bot">سلام! چه محصولی نیاز داری؟
+مثلاً می‌توانی بنویسی: ریمل، قهوه، محصولات مراقبت از پوست یا محصولات بهداشتی.</div>
+</div>
+
+<div class="suggestions">
+<button data-query="ریمل">ریمل</button>
+<button data-query="قهوه">قهوه</button>
+<button data-query="محصولات آرایشی">آرایشی</button>
+<button data-query="محصولات بهداشتی">بهداشتی</button>
+</div>
+
+<form class="input-area" id="chatForm">
+<input id="question" placeholder="نام محصول موردنظرت را بنویس..." autocomplete="off" required>
+<button id="sendButton" type="submit">ارسال</button>
+</form>
+</section>
+
+<div class="note">
+پیشنهادها فقط بر اساس اطلاعات واقعی محصولات ثبت‌شده در فروشگاه هستند.
+</div>
+</main>
+
+<script>
+const SUPABASE_URL="";
+const SUPABASE_ANON_KEY="";
+
+const messages=document.getElementById("messages");
+const input=document.getElementById("question");
+const sendButton=document.getElementById("sendButton");
+
+let db=null;
+
+if(SUPABASE_URL&&SUPABASE_ANON_KEY){
+  db=supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+}
+
+function addMessage(text,type="bot"){
+  const div=document.createElement("div");
+  div.className="msg "+type;
+  div.textContent=text;
+  messages.appendChild(div);
+  messages.scrollTop=messages.scrollHeight;
+}
+
+function formatPrice(value){
+  return Number(value).toLocaleString("fa-IR")+" تومان";
+}
+
+function normalize(text){
+  return String(text||"")
+    .toLowerCase()
+    .replace(/ي/g,"ی")
+    .replace(/ك/g,"ک")
+    .replace(/[‌\s]+/g," ")
+    .trim();
+}
+
+function scoreProduct(product,query){
+  const q=normalize(query);
+  const name=normalize(product.name);
+  const description=normalize(product.description);
+  const words=q.split(" ").filter(Boolean);
+
+  let score=0;
+
+  if(name.includes(q))score+=10;
+  if(description.includes(q))score+=3;
+
+  words.forEach(word=>{
+    if(word.length<2)return;
+    if(name.includes(word))score+=5;
+    if(description.includes(word))score+=2;
+  });
+
+  return score;
+}
+
+async function searchProducts(query){
+  if(!db){
+    addMessage("اتصال پایگاه داده هنوز تنظیم نشده است. لطفاً بعداً دوباره تلاش کنید.");
+    return;
+  }
+
+  addMessage("در حال جست‌وجوی محصولات واقعی فروشگاه...");
+
+  try{
+    const {data,error}=await db
+      .from("products")
+      .select("id,name,description,price,image_url,stock,category")
+      .eq("is_active",true)
+      .gt("stock",0)
+      .limit(100);
+
+    if(error)throw error;
+
+    if(!data||data.length===0){
+      addMessage("در حال حاضر محصول موجودی در فروشگاه ثبت نشده است.");
+      return;
+    }
+
+    const results=data
+      .map(product=>({...product,matchScore:scoreProduct(product,query)}))
+      .filter(product=>product.matchScore>0)
+      .sort((a,b)=>b.matchScore-a.matchScore)
+      .slice(0,6);
+
+    if(results.length===0){
+      addMessage("محصولی مطابق عبارت جست‌وجوی شما در محصولات موجود پیدا نشد. می‌توانید عبارت دیگری امتحان کنید.");
+      return;
+    }
+
+    addMessage("این محصولات واقعی فروشگاه با درخواست شما تطابق دارند:");
+
+    const grid=document.createElement("div");
+    grid.className="products";
+
+    results.forEach(product=>{
+      const card=document.createElement("article");
+      card.className="product";
+
+      if(product.image_url){
+        const img=document.createElement("img");
+        img.src=product.image_url;
+        img.alt=product.name;
+        img.onerror=()=>img.remove();
+        card.appendChild(img);
+      }
+
+      const name=document.createElement("strong");
+      name.textContent=product.name;
+
+      const description=document.createElement("p");
+      description.textContent=product.description||"توضیحات ثبت نشده است.";
+
+      const price=document.createElement("div");
+      price.className="price";
+      price.textContent=formatPrice(product.price);
+
+      const stock=document.createElement("p");
+      stock.textContent="موجودی: "+Number(product.stock).toLocaleString("fa-IR")+" عدد";
+
+      const link=document.createElement("a");
+      link.href="product.html?id="+encodeURIComponent(product.id);
+      link.textContent="مشاهده محصول";
+
+      card.append(name,description,price,stock,link);
+      grid.appendChild(card);
+    });
+
+    messages.appendChild(grid);
+    messages.scrollTop=messages.scrollHeight;
+
+  }catch(error){
+    console.error(error);
+    addMessage("در دریافت محصولات خطایی رخ داد. لطفاً بعداً تلاش کنید.");
+  }
+}
+
+document.getElementById("chatForm").addEventListener("submit",async event=>{
+  event.preventDefault();
+
+  const query=input.value.trim();
+  if(!query)return;
+
+  addMessage(query,"user");
+  input.value="";
+  sendButton.disabled=true;
+
+  try{
+    await searchProducts(query);
+  }finally{
+    sendButton.disabled=false;
+    input.focus();
+  }
+});
+
+document.querySelectorAll("[data-query]").forEach(button=>{
+  button.addEventListener("click",()=>{
+    input.value=button.dataset.query;
+    document.getElementById("chatForm").requestSubmit();
+  });
+});
+</script>
+</body>
+</html>
