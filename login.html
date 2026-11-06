@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#073d32">
+<title>ورود و ثبت‌نام | ZENVIA</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:linear-gradient(135deg,#062d27,#0b5946);font-family:Tahoma,Arial,sans-serif;display:flex;align-items:center;justify-content:center;padding:20px}
+.container{width:100%;max-width:430px;background:#fff;border-radius:23px;padding:30px;box-shadow:0 20px 60px #0003}
+.logo{text-align:center;color:#08785b;font-size:30px;font-weight:bold;letter-spacing:3px}
+.subtitle{text-align:center;color:#78867e;font-size:13px;margin:12px 0 25px}
+.tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;background:#f0f5f2;padding:5px;border-radius:12px}
+.tabs button{border:0;padding:12px;border-radius:9px;background:transparent;font-family:inherit;cursor:pointer}
+.tabs button.active{background:#08785b;color:white}
+label{display:block;font-size:13px;margin:18px 0 8px;color:#36584b}
+input{width:100%;padding:14px;border:1px solid #dce6df;border-radius:10px;font-family:inherit;font-size:14px;outline:none}
+input:focus{border-color:#08785b}
+.submit{width:100%;margin-top:22px;padding:15px;background:#08785b;color:white;border:0;border-radius:11px;font-family:inherit;font-size:14px;cursor:pointer}
+.submit:disabled{opacity:.5}
+.message{margin-top:15px;text-align:center;font-size:13px;line-height:2;color:#63756b}
+.hidden{display:none}
+a{color:#08785b;text-decoration:none}
+.home{display:block;text-align:center;margin-top:20px;font-size:13px}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="logo">ZENVIA</div>
+  <div class="subtitle">محصولات شرکت بیز، به قیمت کارخانه</div>
+
+  <div id="authArea">
+    <div class="tabs">
+      <button id="loginTab" class="active" type="button">ورود</button>
+      <button id="signupTab" type="button">ثبت‌نام</button>
+    </div>
+
+    <form id="authForm">
+      <label for="email">ایمیل</label>
+      <input id="email" type="email" required autocomplete="email" placeholder="example@email.com">
+
+      <label for="password">رمز عبور</label>
+      <input id="password" type="password" required minlength="8" autocomplete="current-password" placeholder="حداقل ۸ کاراکتر">
+
+      <div id="nameField" class="hidden">
+        <label for="fullName">نام و نام خانوادگی</label>
+        <input id="fullName" type="text" maxlength="100" autocomplete="name">
+      </div>
+
+      <button class="submit" id="submitButton" type="submit">ورود به حساب</button>
+    </form>
+  </div>
+
+  <div id="accountArea" class="hidden">
+    <div class="message" id="accountInfo"></div>
+    <button class="submit" id="logoutButton" type="button">خروج از حساب</button>
+  </div>
+
+  <div class="message" id="message" role="status" aria-live="polite"></div>
+  <a class="home" href="index.html">بازگشت به صفحه اصلی</a>
+</div>
+
+<script>
+const SUPABASE_URL="";
+const SUPABASE_ANON_KEY="";
+
+const authArea=document.getElementById("authArea");
+const accountArea=document.getElementById("accountArea");
+const message=document.getElementById("message");
+const loginTab=document.getElementById("loginTab");
+const signupTab=document.getElementById("signupTab");
+const nameField=document.getElementById("nameField");
+const fullName=document.getElementById("fullName");
+const password=document.getElementById("password");
+const submitButton=document.getElementById("submitButton");
+
+let db=null;
+let mode="login";
+
+function showMessage(text){
+  message.textContent=text;
+}
+
+function setMode(newMode){
+  mode=newMode;
+  const signup=mode==="signup";
+
+  loginTab.classList.toggle("active",!signup);
+  signupTab.classList.toggle("active",signup);
+  nameField.classList.toggle("hidden",!signup);
+  fullName.required=signup;
+  password.autocomplete=signup?"new-password":"current-password";
+  submitButton.textContent=signup?"ساخت حساب کاربری":"ورود به حساب";
+  showMessage("");
+}
+
+loginTab.addEventListener("click",()=>setMode("login"));
+signupTab.addEventListener("click",()=>setMode("signup"));
+
+async function checkSession(){
+  if(!SUPABASE_URL||!SUPABASE_ANON_KEY){
+    showMessage("اتصال Supabase هنوز تنظیم نشده است.");
+    return;
+  }
+
+  try{
+    db=supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+
+    const {data,error}=await db.auth.getSession();
+    if(error)throw error;
+
+    if(data.session){
+      showAccount(data.session.user);
+    }
+  }catch(error){
+    console.error(error);
+    showMessage("بررسی حساب کاربری با خطا مواجه شد.");
+  }
+}
+
+function showAccount(user){
+  authArea.classList.add("hidden");
+  accountArea.classList.remove("hidden");
+
+  document.getElementById("accountInfo").textContent=
+    "شما وارد حساب کاربری شده‌اید: "+(user.email||"کاربر زنویا");
+  showMessage("");
+}
+
+document.getElementById("authForm").addEventListener("submit",async event=>{
+  event.preventDefault();
+
+  if(!db){
+    showMessage("ابتدا تنظیمات اتصال Supabase را تکمیل کنید.");
+    return;
+  }
+
+  const email=document.getElementById("email").value.trim();
+  const pass=password.value;
+
+  submitButton.disabled=true;
+  showMessage("لطفاً منتظر بمانید...");
+
+  try{
+    if(mode==="signup"){
+      const name=fullName.value.trim();
+
+      const {data,error}=await db.auth.signUp({
+        email,
+        password:pass,
+        options:{
+          data:{full_name:name}
+        }
+      });
+
+      if(error)throw error;
+
+      if(data.session){
+        showAccount(data.user);
+        showMessage("حساب شما ساخته شد.");
+      }else{
+        showMessage("ثبت‌نام انجام شد. ایمیل خود را برای تأیید حساب بررسی کنید.");
+      }
+    }else{
+      const {data,error}=await db.auth.signInWithPassword({
+        email,
+        password:pass
+      });
+
+      if(error)throw error;
+
+      showAccount(data.user);
+      showMessage("ورود موفقیت‌آمیز بود.");
+    }
+  }catch(error){
+    console.error(error);
+    showMessage("عملیات ناموفق بود. اطلاعات را بررسی کنید و دوباره تلاش کنید.");
+  }finally{
+    submitButton.disabled=false;
+  }
+});
+
+document.getElementById("logoutButton").addEventListener("click",async()=>{
+  if(!db)return;
+
+  try{
+    const {error}=await db.auth.signOut();
+    if(error)throw error;
+
+    accountArea.classList.add("hidden");
+    authArea.classList.remove("hidden");
+    document.getElementById("authForm").reset();
+    setMode("login");
+    showMessage("از حساب کاربری خارج شدید.");
+  }catch(error){
+    console.error(error);
+    showMessage("خروج از حساب انجام نشد.");
+  }
+});
+
+checkSession();
+</script>
+</body>
+</html>
