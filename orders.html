@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#073d32">
+<title>سفارش‌های من | ZENVIA</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#f5f8f6;color:#173b32;font-family:Tahoma,Arial,sans-serif}
+header{background:#073d32;color:white;padding:18px 6%;display:flex;justify-content:space-between;align-items:center;gap:15px}
+.logo{font-size:25px;font-weight:bold;letter-spacing:2px;color:#d8bd79;text-decoration:none}
+nav{display:flex;gap:18px;flex-wrap:wrap;font-size:13px}
+nav a{color:white;text-decoration:none}
+main{max-width:900px;margin:35px auto;padding:0 16px}
+h1{font-size:25px}
+.card{background:white;border-radius:18px;padding:22px;margin:18px 0;box-shadow:0 8px 30px #173b3210}
+label{display:block;font-size:13px;margin:15px 0 8px}
+input,textarea{width:100%;padding:13px;border:1px solid #dce6df;border-radius:10px;font-family:inherit;font-size:14px}
+textarea{min-height:90px;resize:vertical}
+button{border:0;border-radius:10px;padding:14px 20px;background:#08785b;color:white;font-family:inherit;cursor:pointer}
+button:disabled{opacity:.5;cursor:not-allowed}
+.primary{width:100%;margin-top:15px}
+.message{padding:20px;text-align:center;line-height:2;color:#718078}
+.order{border:1px solid #e7eee9;border-radius:12px;padding:16px;margin-top:12px}
+.order strong{color:#08785b}
+.status{display:inline-block;background:#e8f4ed;padding:6px 10px;border-radius:20px;font-size:12px;margin-top:8px}
+.small{font-size:12px;color:#718078;line-height:2}
+</style>
+</head>
+<body>
+<header>
+<a class="logo" href="index.html">ZENVIA</a>
+<nav>
+<a href="index.html">خانه</a>
+<a href="shop.html">فروشگاه</a>
+<a href="cart.html">سبد خرید</a>
+<a href="login.html">حساب کاربری</a>
+</nav>
+</header>
+
+<main>
+<h1>سفارش‌های من</h1>
+
+<section class="card">
+<h2>اطلاعات ارسال سفارش</h2>
+<div id="userMessage" class="small">برای ثبت سفارش باید وارد حساب کاربری شوید.</div>
+
+<form id="orderForm">
+<label for="customerName">نام و نام خانوادگی</label>
+<input id="customerName" required maxlength="100" autocomplete="name">
+
+<label for="phone">شماره تماس</label>
+<input id="phone" required maxlength="20" autocomplete="tel" inputmode="tel">
+
+<label for="address">نشانی کامل تحویل</label>
+<textarea id="address" required maxlength="1000"></textarea>
+
+<button class="primary" id="submitOrder" type="submit">ثبت سفارش</button>
+</form>
+<p class="small">ثبت سفارش پس از اتصال و تنظیم سیاست‌های امنیتی Supabase فعال می‌شود.</p>
+</section>
+
+<section class="card">
+<h2>سفارش‌های ثبت‌شده</h2>
+<div id="ordersList" class="message">در حال بررسی سفارش‌ها...</div>
+</section>
+</main>
+
+<script>
+const SUPABASE_URL="";
+const SUPABASE_ANON_KEY="";
+const CART_KEY="zenvia_cart";
+
+const form=document.getElementById("orderForm");
+const submitButton=document.getElementById("submitOrder");
+const ordersList=document.getElementById("ordersList");
+const userMessage=document.getElementById("userMessage");
+
+let db=null;
+let currentUser=null;
+
+function money(value){
+  return Number(value).toLocaleString("fa-IR")+" تومان";
+}
+
+function showOrdersMessage(message){
+  ordersList.className="message";
+  ordersList.textContent=message;
+}
+
+async function initialize(){
+  form.addEventListener("submit",submitOrder);
+  submitButton.disabled=true;
+
+  if(!SUPABASE_URL||!SUPABASE_ANON_KEY){
+    userMessage.textContent="اتصال Supabase هنوز تنظیم نشده است.";
+    showOrdersMessage("برای مشاهده سفارش‌ها ابتدا اتصال پایگاه داده باید تنظیم شود.");
+    return;
+  }
+
+  try{
+    db=supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+
+    const {data,error}=await db.auth.getUser();
+    if(error)throw error;
+
+    currentUser=data.user;
+
+    if(!currentUser){
+      userMessage.textContent="برای ثبت و مشاهده سفارش‌ها ابتدا وارد حساب کاربری شوید.";
+      showOrdersMessage("برای مشاهده سفارش‌ها وارد حساب کاربری شوید.");
+      return;
+    }
+
+    userMessage.textContent="حساب کاربری شما آماده ثبت سفارش است.";
+    submitButton.disabled=false;
+    await loadOrders();
+
+  }catch(error){
+    console.error(error);
+    userMessage.textContent="خطا در اتصال به حساب کاربری.";
+    showOrdersMessage("دریافت اطلاعات با خطا مواجه شد.");
+  }
+}
+
+async function submitOrder(event){
+  event.preventDefault();
+
+  if(!db||!currentUser){
+    alert("ابتدا وارد حساب کاربری شوید.");
+    return;
+  }
+
+  const cart=readCart();
+
+  if(cart.length===0){
+    alert("سبد خرید شما خالی است.");
+    return;
+  }
+
+  const name=document.getElementById("customerName").value.trim();
+  const phone=document.getElementById("phone").value.trim();
+  const address=document.getElementById("address").value.trim();
+
+  if(!name||!phone||!address){
+    alert("لطفاً تمام اطلاعات را تکمیل کنید.");
+    return;
+  }
+
+  submitButton.disabled=true;
+  submitButton.textContent="در حال ثبت سفارش...";
+
+  try{
+    // قیمت و موجودی باید در سرور دوباره بررسی شوند.
+    // این نسخه تا آماده شدن تابع امن ثبت سفارش، عمداً سفارش ثبت نمی‌کند.
+    throw new Error("ORDER_FUNCTION_NOT_CONFIGURED");
+
+  }catch(error){
+    console.error(error);
+    alert("ثبت سفارش هنوز فعال نشده است. ابتدا باید تابع امن ثبت سفارش در Supabase راه‌اندازی شود.");
+  }finally{
+    submitButton.disabled=false;
+    submitButton.textContent="ثبت سفارش";
+  }
+}
+
+function readCart(){
+  try{
+    const cart=JSON.parse(localStorage.getItem(CART_KEY)||"[]");
+    return Array.isArray(cart)?cart:[];
+  }catch{
+    return [];
+  }
+}
+
+async function loadOrders(){
+  try{
+    const {data,error}=await db
+      .from("orders")
+      .select("id,total_amount,status,created_at")
+      .eq("user_id",currentUser.id)
+      .order("created_at",{ascending:false});
+
+    if(error)throw error;
+
+    if(!data||data.length===0){
+      showOrdersMessage("هنوز سفارشی ثبت نکرده‌اید.");
+      return;
+    }
+
+    ordersList.className="";
+    ordersList.replaceChildren();
+
+    data.forEach(order=>{
+      const card=document.createElement("div");
+      card.className="order";
+
+      const number=document.createElement("div");
+      number.textContent="شماره سفارش: "+order.id;
+
+      const amount=document.createElement("p");
+      amount.textContent="مبلغ: "+money(order.total_amount);
+
+      const status=document.createElement("span");
+      status.className="status";
+      status.textContent=order.status||"در انتظار بررسی";
+
+      const date=document.createElement("p");
+      date.className="small";
+      date.textContent=order.created_at
+        ?new Date(order.created_at).toLocaleString("fa-IR")
+        :"";
+
+      card.append(number,amount,status,date);
+      ordersList.appendChild(card);
+    });
+
+  }catch(error){
+    console.error(error);
+    showOrdersMessage("خطا در دریافت سفارش‌ها. لطفاً بعداً تلاش کنید.");
+  }
+}
+
+initialize();
+</script>
+</body>
+</html>
