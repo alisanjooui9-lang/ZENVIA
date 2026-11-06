@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#073d32">
+<title>پنل مدیریت | ZENVIA</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#f3f7f4;color:#173b32;font-family:Tahoma,Arial,sans-serif}
+header{background:#073d32;color:white;padding:17px 5%;display:flex;justify-content:space-between;align-items:center;gap:15px}
+.logo{font-size:25px;font-weight:bold;letter-spacing:2px;color:#d8bd79}
+header a{color:white;text-decoration:none;font-size:13px}
+main{max-width:1100px;margin:30px auto;padding:0 16px}
+h1{font-size:25px}
+h2{font-size:19px}
+.card{background:white;border-radius:17px;padding:22px;margin:20px 0;box-shadow:0 7px 25px #173b3210}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.stat{background:#eef6f0;padding:18px;border-radius:13px}
+.stat span{display:block;color:#718078;font-size:12px}
+.stat strong{display:block;font-size:24px;color:#08785b;margin-top:10px}
+label{display:block;font-size:13px;margin:15px 0 8px}
+input,textarea,select{width:100%;padding:13px;border:1px solid #dce6df;border-radius:10px;font-family:inherit;font-size:13px;background:white}
+textarea{min-height:90px;resize:vertical}
+button{border:0;border-radius:9px;padding:12px 16px;font-family:inherit;cursor:pointer;font-size:13px}
+.primary{background:#08785b;color:white}
+.danger{background:#fff0ed;color:#bb4938}
+.secondary{background:#edf3ef;color:#315e4b}
+button:disabled{opacity:.5;cursor:not-allowed}
+.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:15px}
+.imagebox{border:2px dashed #b8cfc0;border-radius:13px;padding:18px;text-align:center;background:#f7faf8}
+.imagebox img{max-width:100%;max-height:180px;object-fit:contain;display:none;margin:10px auto}
+.imagebox input{border:0}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:15px}
+.product,.order{border:1px solid #e7eee9;border-radius:12px;padding:14px;margin-top:12px;display:flex;gap:14px;align-items:center}
+.product img{width:80px;height:80px;object-fit:contain;background:#f3f6f4;border-radius:9px}
+.product-info{flex:1;min-width:0}
+.product-info strong{display:block;line-height:1.8}
+.muted{font-size:12px;color:#75847c;line-height:2;margin-top:5px}
+.badge{display:inline-block;padding:5px 9px;border-radius:20px;background:#e8f4ed;color:#08785b;font-size:11px}
+.message{padding:20px;text-align:center;color:#718078;line-height:2}
+.hidden{display:none!important}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:20px 0}
+.tabs button{background:#e6eee8;color:#315e4b}
+.tabs button.active{background:#08785b;color:white}
+.section{display:none}
+.section.active{display:block}
+#notice{position:sticky;top:0;z-index:5;background:#fff6dc;color:#795c18;padding:12px;text-align:center;font-size:12px;display:none}
+@media(max-width:650px){
+ header{align-items:flex-start;flex-direction:column}
+ .grid{grid-template-columns:1fr}
+ .formgrid{grid-template-columns:1fr}
+ .product{align-items:flex-start}
+}
+</style>
+</head>
+<body>
+
+<header>
+<div class="logo">ZENVIA ADMIN</div>
+<a href="index.html">بازگشت به فروشگاه ←</a>
+</header>
+
+<div id="notice"></div>
+
+<main>
+<h1>پنل مدیریت زنویا</h1>
+<p class="muted">مدیریت محصولات، تصاویر، موجودی و سفارش‌های فروشگاه</p>
+
+<section id="loginMessage" class="card message">
+در حال بررسی دسترسی مدیر...
+</section>
+
+<div id="dashboard" class="hidden">
+
+<div class="grid">
+<div class="stat">
+<span>تعداد محصولات</span>
+<strong id="productCount">۰</strong>
+</div>
+<div class="stat">
+<span>تعداد سفارش‌ها</span>
+<strong id="orderCount">۰</strong>
+</div>
+<div class="stat">
+<span>سفارش‌های در انتظار</span>
+<strong id="pendingCount">۰</strong>
+</div>
+</div>
+
+<div class="tabs">
+<button class="active" data-tab="productsSection">محصولات</button>
+<button data-tab="ordersSection">سفارش‌ها</button>
+<button data-tab="addSection">افزودن محصول</button>
+</div>
+
+<section id="productsSection" class="section active card">
+<h2>مدیریت محصولات</h2>
+<div id="productsList" class="message">در حال دریافت محصولات...</div>
+</section>
+
+<section id="addSection" class="section card">
+<h2 id="formTitle">افزودن محصول جدید</h2>
+
+<form id="productForm">
+<input type="hidden" id="productId">
+
+<label for="productName">نام محصول</label>
+<input id="productName" required maxlength="150">
+
+<div class="formgrid">
+<div>
+<label for="productPrice">قیمت (تومان)</label>
+<input id="productPrice" type="number" min="0" step="1" required>
+</div>
+<div>
+<label for="productStock">موجودی</label>
+<input id="productStock" type="number" min="0" step="1" required>
+</div>
+</div>
+
+<label for="productCategory">دسته‌بندی</label>
+<select id="productCategory" required>
+<option value="cosmetics">آرایشی و زیبایی</option>
+<option value="health">سلامت و بهداشت</option>
+<option value="food">خوراکی و نوشیدنی</option>
+<option value="other">سایر محصولات</option>
+</select>
+
+<label for="productDescription">توضیحات محصول</label>
+<textarea id="productDescription" maxlength="5000"></textarea>
+
+<label>تصویر محصول</label>
+<div class="imagebox">
+<p class="muted">برای انتخاب تصویر از گالری گوشی روی دکمه زیر بزنید.</p>
+<input id="productImage" type="file" accept="image/jpeg,image/png,image/webp">
+<img id="imagePreview" alt="پیش‌نمایش تصویر">
+</div>
+
+<label>
+<input id="productActive" type="checkbox" checked style="width:auto">
+ نمایش محصول در فروشگاه
+</label>
+
+<div class="actions">
+<button class="primary" id="saveProduct" type="submit">ذخیره محصول</button>
+<button class="secondary" id="cancelEdit" type="button">پاک کردن فرم</button>
+</div>
+</form>
+</section>
+
+<section id="ordersSection" class="section card">
+<h2>مدیریت سفارش‌ها</h2>
+<div id="ordersList" class="message">در حال دریافت سفارش‌ها...</div>
+</section>
+
+</div>
+</main>
+
+<script>
+const SUPABASE_URL="";
+const SUPABASE_ANON_KEY="";
+const BUCKET="product-images";
+
+let db=null;
+let currentUser=null;
+let editingImageUrl=null;
+
+const $=id=>document.getElementById(id);
+
+function notify(text){
+  $("notice").textContent=text;
+  $("notice").style.display="block";
+  window.scrollTo({top:0,behavior:"smooth"});
+  setTimeout(()=>$("notice").style.display="none",4500);
+}
+
+function money(value){
+  return Number(value).toLocaleString("fa-IR")+" تومان";
+}
+
+function showLoginMessage(text){
+  $("loginMessage").textContent=text;
+}
+
+async function initialize(){
+  if(!SUPABASE_URL||!SUPABASE_ANON_KEY){
+    showLoginMessage("ابتدا URL و کلید عمومی Supabase را در تنظیمات این فایل وارد کنید.");
+    return;
+  }
+
+  try{
+    db=supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+
+    const {data,error}=await db.auth.getUser();
+    if(error)throw error;
+
+    currentUser=data.user;
+
+    if(!currentUser){
+      showLoginMessage("برای ورود به پنل مدیریت ابتدا وارد حساب کاربری شوید.");
+      return;
+    }
+
+    const {data:profile,error:profileError}=await db
+      .from("profiles")
+      .select("role")
+      .eq("id",currentUser.id)
+      .maybeSingle();
+
+    if(profileError)throw profileError;
+
+    if(!profile||profile.role!=="admin"){
+      showLoginMessage("دسترسی شما به پنل مدیریت مجاز نیست.");
+      return;
+    }
+
+    $("loginMessage").classList.add("hidden");
+    $("dashboard").classList.remove("hidden");
+
+    await refreshAll();
+
+  }catch(error){
+    console.error(error);
+    showLoginMessage("بررسی دسترسی مدیر با خطا مواجه شد. تنظیمات دیتابیس را بررسی کنید.");
+  }
+}
+
+async function refreshAll(){
+  await Promise.all([loadProducts(),loadOrders()]);
+}
+
+document.querySelectorAll("[data-tab]").forEach(button=>{
+  button.addEventListener("click",()=>{
+    document.querySelectorAll("[data-tab]").forEach(b=>b.classList.remove("active"));
+    document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
+
+    button.classList.add("active");
+    $(button.dataset.tab).classList.add("active");
+  });
+});
+
+$("productImage").addEventListener("change",()=>{
+  const file=$("productImage").files[0];
+  const preview=$("imagePreview");
+
+  if(!file){
+    preview.style.display="none";
+    return;
+  }
+
+  if(!file.type.startsWith("image/")){
+    notify("فایل انتخاب‌شده تصویر معتبر نیست.");
+    $("productImage").value="";
+    return;
+  }
+
+  if(file.size>5*1024*1024){
+    notify("حجم تصویر نباید بیشتر از ۵ مگابایت باشد.");
+    $("productImage").value="";
+    return;
+  }
+
+  preview.src=URL.createObjectURL(file);
+  preview.style.display="block";
+});
+
+async function loadProducts(){
+  const list=$("productsList");
+  list.textContent="در حال دریافت محصولات...";
+
+  try{
+    const {data,error}=await db
+      .from("products")
+      .select("id,name,description,price,image_url,stock,category,is_active,created_at")
+      .order("created_at",{ascending:false});
+
+    if(error)throw error;
+
+    $("productCount").textContent=(data||[]).length.toLocaleString("fa-IR");
+
+    if(!data||data.length===0){
+      list.textContent="هنوز محصولی ثبت نشده است.";
+      return;
+    }
+
+    list.replaceChildren();
+
+    data.forEach(product=>{
+      const row=document.createElement("div");
+      row.className="product";
+
+      const img=document.createElement("img");
+      img.src=product.image_url||"";
+      img.alt=product.name||"محصول";
+      img.onerror=()=>{img.style.visibility="hidden";};
+
+      const info=document.createElement("div");
+      info.className="product-info";
+
+      const name=document.createElement("strong");
+      name.textContent=product.name;
+
+      const price=document.createElement("div");
+      price.className="muted";
+      price.textContent=money(product.price);
+
+      const stock=document.createElement("div");
+      stock.className="muted";
+      stock.textContent="موجودی: "+Number(product.stock).toLocaleString("fa-IR");
+
+      const status=document.createElement("span");
+      status.className="badge";
+      status.textContent=product.is_active?"فعال":"غیرفعال";
+
+      info.append(name,price,stock,status);
+
+      const actions=document.createElement("div");
+      actions.className="actions";
+
+      const edit=document.createElement("button");
+      edit.className="secondary";
+      edit.textContent="ویرایش";
+      edit.addEventListener("click",()=>editProduct(product));
+
+      const remove=document.createElement("button");
+      remove.className="danger";
+      remove.textContent="حذف";
+      remove.addEventListener("click",()=>deleteProduct(product));
+
+      actions.append(edit,remove);
+      row.append(img,info,actions);
+      list.appendChild(row);
+    });
+
+  }catch(error){
+    console.error(error);
+    list.textContent="خطا در دریافت محصولات. دسترسی دیتابیس را بررسی کنید.";
+  }
+}
+
+function editProduct(product){
+  $("productId").value=product.id;
+  $("productName").value=product.name||"";
+  $("productPrice").value=product.price;
+  $("productStock").value=product.stock;
+  $("productCategory").value=product.category||"other";
+  $("productDescription").value=product.description||"";
+  $("productActive").checked=!!product.is_active;
+
+  editingImageUrl=product.image_url||null;
+
+  $("productImage").value="";
+  $("imagePreview").src=editingImageUrl||"";
+  $("imagePreview").style.display=editingImageUrl?"block":"none";
+
+  $("formTitle").textContent="ویرایش محصول";
+  $("saveProduct").textContent="ذخیره تغییرات";
+
+  document.querySelector('[data-tab="addSection"]').click();
+}
+
+function resetForm(){
+  $("productForm").reset();
+  $("productId").value="";
+  $("imagePreview").src="";
+  $("imagePreview").style.display="none";
+  $("formTitle").textContent="افزودن محصول جدید";
+  $("saveProduct").textContent="ذخیره محصول";
+  editingImageUrl=null;
+}
+
+$("cancelEdit").addEventListener("click",resetForm);
+
+async function uploadImage(file){
+  if(!file)return editingImageUrl;
+
+  const extension=file.name.split(".").pop().toLowerCase();
+  const path=currentUser.id+"/"+crypto.randomUUID()+"."+extension;
+
+  const {error}=await db.storage
+    .from(BUCKET)
+    .upload(path,file,{
+      contentType:file.type,
+      upsert:false
+    });
+
+  if(error)throw error;
+
+  const {data}=db.storage.from(BUCKET).getPublicUrl(path);
+  return data.publicUrl;
+}
+
+$("productForm").addEventListener("submit",async event=>{
+  event.preventDefault();
+
+  const button=$("saveProduct");
+  button.disabled=true;
+
+  try{
+    const file=$("productImage").files[0];
+    const imageUrl=await uploadImage(file);
+
+    const product={
+      name:$("productName").value.trim(),
+      description:$("productDescription").value.trim(),
+      price:Number($("productPrice").value),
+      stock:Number($("productStock").value),
+      category:$("productCategory").value,
+      is_active:$("productActive").checked,
+      image_url:imageUrl
+    };
+
+    if(!product.name||product.price<0||product.stock<0){
+      throw new Error("INVALID_PRODUCT");
+    }
+
+    const id=$("productId").value;
+
+    let result;
+
+    if(id){
+      result=await db.from("products").update(product).eq("id",id);
+    }else{
+      result=await db.from("products").insert(product);
+    }
+
+    if(result.error)throw result.error;
+
+    notify(id?"محصول ویرایش شد.":"محصول جدید ثبت شد.");
+    resetForm();
+    await loadProducts();
+
+    document.querySelector('[data-tab="productsSection"]').click();
+
+  }catch(error){
+    console.error(error);
+    notify("ذخیره محصول انجام نشد. اتصال، دسترسی‌ها و جدول‌ها را بررسی کنید.");
+  }finally{
+    button.disabled=false;
+  }
+});
+
+async function deleteProduct(product){
+  if(!confirm("آیا از حذف این محصول مطمئن هستید؟"))return;
+
+  try{
+    const {error}=await db
+      .from("products")
+      .delete()
+      .eq("id",product.id);
+
+    if(error)throw error;
+
+    notify("محصول حذف شد.");
+    await loadProducts();
+
+  }catch(error){
+    console.error(error);
+    notify("حذف محصول انجام نشد. دسترسی دیتابیس را بررسی کنید.");
+  }
+}
+
+async function loadOrders(){
+  const list=$("ordersList");
+  list.textContent="در حال دریافت سفارش‌ها...";
+
+  try{
+    const {data,error}=await db
+      .from("orders")
+      .select("id,user_id,total_amount,status,created_at")
+      .order("created_at",{ascending:false});
+
+    if(error)throw error;
+
+    $("orderCount").textContent=(data||[]).length.toLocaleString("fa-IR");
+    $("pendingCount").textContent=(data||[]).filter(o=>o.status==="pending").length.toLocaleString("fa-IR");
+
+    if(!data||data.length===0){
+      list.textContent="هنوز سفارشی ثبت نشده است.";
+      return;
+    }
+
+    list.replaceChildren();
+
+    data.forEach(order=>{
+      const card=document.createElement("div");
+      card.className="order";
+
+      const info=document.createElement("div");
+      info.style.flex="1";
+
+      const title=document.createElement("strong");
+      title.textContent="سفارش شماره "+order.id;
+
+      const amount=document.createElement("div");
+      amount.className="muted";
+      amount.textContent="مبلغ: "+money(order.total_amount);
+
+      const status=document.createElement("div");
+      status.className="muted";
+      status.textContent="وضعیت فعلی: "+order.status;
+
+      const select=document.createElement("select");
+
+      [
+        ["pending","در انتظار بررسی"],
+        ["confirmed","تأیید شده"],
+        ["processing","در حال آماده‌سازی"],
+        ["shipped","ارسال شده"],
+        ["delivered","تحویل شده"],
+        ["cancelled","لغو شده"]
+      ].forEach(([value,label])=>{
+        const option=document.createElement("option");
+        option.value=value;
+        option.textContent=label;
+        select.appendChild(option);
+      });
+
+      select.value=order.status||"pending";
+
+      const save=document.createElement("button");
+      save.className="primary";
+      save.textContent="ذخیره وضعیت";
+
+      save.addEventListener("click",async()=>{
+        save.disabled=true;
+
+        try{
+          const {error}=await db
+            .from("orders")
+            .update({status:select.value})
+            .eq("id",order.id);
+
+          if(error)throw error;
+
+          notify("وضعیت سفارش به‌روزرسانی شد.");
+          await loadOrders();
+
+        }catch(error){
+          console.error(error);
+          notify("تغییر وضعیت سفارش انجام نشد.");
+        }finally{
+          save.disabled=false;
+        }
+      });
+
+      info.append(title,amount,status,select,save);
+      card.appendChild(info);
+      list.appendChild(card);
+    });
+
+  }catch(error){
+    console.error(error);
+    list.textContent="خطا در دریافت سفارش‌ها. دسترسی مدیر و سیاست‌های RLS را بررسی کنید.";
+  }
+}
+
+initialize();
+</script>
+</body>
+</html>
