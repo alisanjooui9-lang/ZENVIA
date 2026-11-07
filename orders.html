@@ -1,229 +1,507 @@
-<!DOCTYPE html>
-<html lang="fa" dir="rtl">
+<!DOCTYPE html><html lang="fa" dir="rtl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#073d32">
-<title>سفارش‌های من | ZENVIA</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<style>
-*{box-sizing:border-box}
-body{margin:0;background:#f5f8f6;color:#173b32;font-family:Tahoma,Arial,sans-serif}
-header{background:#073d32;color:white;padding:18px 6%;display:flex;justify-content:space-between;align-items:center;gap:15px}
-.logo{font-size:25px;font-weight:bold;letter-spacing:2px;color:#d8bd79;text-decoration:none}
-nav{display:flex;gap:18px;flex-wrap:wrap;font-size:13px}
-nav a{color:white;text-decoration:none}
-main{max-width:900px;margin:35px auto;padding:0 16px}
-h1{font-size:25px}
-.card{background:white;border-radius:18px;padding:22px;margin:18px 0;box-shadow:0 8px 30px #173b3210}
-label{display:block;font-size:13px;margin:15px 0 8px}
-input,textarea{width:100%;padding:13px;border:1px solid #dce6df;border-radius:10px;font-family:inherit;font-size:14px}
-textarea{min-height:90px;resize:vertical}
-button{border:0;border-radius:10px;padding:14px 20px;background:#08785b;color:white;font-family:inherit;cursor:pointer}
-button:disabled{opacity:.5;cursor:not-allowed}
-.primary{width:100%;margin-top:15px}
-.message{padding:20px;text-align:center;line-height:2;color:#718078}
-.order{border:1px solid #e7eee9;border-radius:12px;padding:16px;margin-top:12px}
-.order strong{color:#08785b}
-.status{display:inline-block;background:#e8f4ed;padding:6px 10px;border-radius:20px;font-size:12px;margin-top:8px}
-.small{font-size:12px;color:#718078;line-height:2}
-</style>
-</head>
-<body>
-<header>
-<a class="logo" href="index.html">ZENVIA</a>
-<nav>
-<a href="index.html">خانه</a>
-<a href="shop.html">فروشگاه</a>
-<a href="cart.html">سبد خرید</a>
-<a href="login.html">حساب کاربری</a>
-</nav>
-</header>
-
-<main>
-<h1>سفارش‌های من</h1>
-
-<section class="card">
-<h2>اطلاعات ارسال سفارش</h2>
-<div id="userMessage" class="small">برای ثبت سفارش باید وارد حساب کاربری شوید.</div>
-
-<form id="orderForm">
-<label for="customerName">نام و نام خانوادگی</label>
-<input id="customerName" required maxlength="100" autocomplete="name">
-
-<label for="phone">شماره تماس</label>
-<input id="phone" required maxlength="20" autocomplete="tel" inputmode="tel">
-
-<label for="address">نشانی کامل تحویل</label>
-<textarea id="address" required maxlength="1000"></textarea>
-
-<button class="primary" id="submitOrder" type="submit">ثبت سفارش</button>
-</form>
-<p class="small">ثبت سفارش پس از اتصال و تنظیم سیاست‌های امنیتی Supabase فعال می‌شود.</p>
-</section>
-
-<section class="card">
-<h2>سفارش‌های ثبت‌شده</h2>
-<div id="ordersList" class="message">در حال بررسی سفارش‌ها...</div>
-</section>
-</main>
-
-<script>
-const SUPABASE_URL="";
-const SUPABASE_ANON_KEY="";
-const CART_KEY="zenvia_cart";
-
-const form=document.getElementById("orderForm");
-const submitButton=document.getElementById("submitOrder");
-const ordersList=document.getElementById("ordersList");
-const userMessage=document.getElementById("userMessage");
-
-let db=null;
-let currentUser=null;
-
-function money(value){
-  return Number(value).toLocaleString("fa-IR")+" تومان";
+<meta name="theme-color" content="#073b32">
+<title>ثبت سفارش | ZENVIA</title><link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet"><style>
+:root {
+    --green: #073b32;
+    --light-green: #0d5949;
+    --gold: #c9a45c;
+    --bg: #f7f8f5;
+    --text: #202923;
+    --muted: #78817b;
+    --border: #e7ebe6;
+    --white: #fff;
+    --red: #bd4141;
 }
 
-function showOrdersMessage(message){
-  ordersList.className="message";
-  ordersList.textContent=message;
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
-async function initialize(){
-  form.addEventListener("submit",submitOrder);
-  submitButton.disabled=true;
+body {
+    font-family: "Vazirmatn", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+}
 
-  if(!SUPABASE_URL||!SUPABASE_ANON_KEY){
-    userMessage.textContent="اتصال Supabase هنوز تنظیم نشده است.";
-    showOrdersMessage("برای مشاهده سفارش‌ها ابتدا اتصال پایگاه داده باید تنظیم شود.");
-    return;
-  }
+a {
+    color: inherit;
+    text-decoration: none;
+}
 
-  try{
-    db=supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+header {
+    background: var(--green);
+    color: white;
+    padding: 18px 5%;
+}
 
-    const {data,error}=await db.auth.getUser();
-    if(error)throw error;
+.header-inner {
+    max-width: 1050px;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
 
-    currentUser=data.user;
+.logo {
+    font-size: 23px;
+    font-weight: 800;
+}
 
-    if(!currentUser){
-      userMessage.textContent="برای ثبت و مشاهده سفارش‌ها ابتدا وارد حساب کاربری شوید.";
-      showOrdersMessage("برای مشاهده سفارش‌ها وارد حساب کاربری شوید.");
-      return;
+.logo span {
+    color: var(--gold);
+}
+
+.back {
+    font-size: 13px;
+    color: #e5eee9;
+}
+
+.container {
+    max-width: 1050px;
+    margin: 35px auto;
+    padding: 0 16px;
+}
+
+h1 {
+    font-size: 25px;
+    margin-bottom: 7px;
+}
+
+.subtitle {
+    color: var(--muted);
+    font-size: 13px;
+    margin-bottom: 25px;
+}
+
+.layout {
+    display: grid;
+    grid-template-columns: 1fr 330px;
+    gap: 20px;
+    align-items: start;
+}
+
+.box {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 22px;
+}
+
+.box h2 {
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+.field {
+    margin-bottom: 17px;
+}
+
+label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+input,
+textarea {
+    width: 100%;
+    padding: 13px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: #fcfdfb;
+    font-family: inherit;
+    font-size: 14px;
+    outline: none;
+}
+
+input:focus,
+textarea:focus {
+    border-color: var(--light-green);
+}
+
+textarea {
+    min-height: 110px;
+    resize: vertical;
+}
+
+.summary-item {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+}
+
+.summary-item span {
+    color: var(--muted);
+}
+
+.total {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid var(--border);
+    font-weight: 800;
+    color: var(--green);
+    font-size: 17px;
+}
+
+.submit {
+    width: 100%;
+    margin-top: 22px;
+    padding: 14px;
+    border: 0;
+    border-radius: 10px;
+    background: var(--green);
+    color: white;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.submit:disabled {
+    opacity: .55;
+    cursor: not-allowed;
+}
+
+.message {
+    display: none;
+    padding: 13px;
+    border-radius: 10px;
+    margin-bottom: 17px;
+    font-size: 13px;
+    line-height: 1.9;
+}
+
+.message.error {
+    display: block;
+    background: #fff0f0;
+    color: var(--red);
+}
+
+.message.success {
+    display: block;
+    background: #eaf6ed;
+    color: #176b38;
+}
+
+.empty {
+    background: white;
+    padding: 40px 20px;
+    border-radius: 15px;
+    text-align: center;
+}
+
+.empty p {
+    color: var(--muted);
+    margin: 10px 0 20px;
+    font-size: 13px;
+}
+
+.empty a {
+    display: inline-block;
+    background: var(--green);
+    color: white;
+    padding: 12px 22px;
+    border-radius: 9px;
+}
+
+footer {
+    text-align: center;
+    padding: 25px 10px;
+    color: var(--muted);
+    font-size: 12px;
+}
+
+@media(max-width: 750px) {
+    .layout {
+        grid-template-columns: 1fr;
+    }
+}
+</style></head><body><header>
+    <div class="header-inner">
+        <a class="logo" href="index.html">ZEN<span>VIA</span></a>
+        <a class="back" href="cart.html">بازگشت به سبد خرید ←</a>
+    </div>
+</header><main class="container"><h1>ثبت نهایی سفارش</h1>
+<p class="subtitle">اطلاعات خود را وارد کنید تا سفارش شما ثبت شود.</p>
+
+<div id="emptyState" class="empty" style="display:none">
+    <h2>سبد خرید خالی است</h2>
+    <p>برای ثبت سفارش ابتدا محصولی به سبد خرید اضافه کنید.</p>
+    <a href="shop.html">رفتن به فروشگاه</a>
+</div>
+
+<div id="checkoutLayout" class="layout" style="display:none">
+
+    <section class="box">
+        <h2>اطلاعات تحویل سفارش</h2>
+
+        <div id="message" class="message"></div>
+
+        <form id="orderForm">
+
+            <div class="field">
+                <label for="customerName">نام و نام خانوادگی</label>
+                <input
+                    id="customerName"
+                    type="text"
+                    maxlength="100"
+                    autocomplete="name"
+                    required
+                    placeholder="نام کامل خود را وارد کنید"
+                >
+            </div>
+
+            <div class="field">
+                <label for="phone">شماره تلفن همراه</label>
+                <input
+                    id="phone"
+                    type="tel"
+                    maxlength="20"
+                    autocomplete="tel"
+                    required
+                    placeholder="شماره تماس"
+                >
+            </div>
+
+            <div class="field">
+                <label for="address">آدرس کامل تحویل</label>
+                <textarea
+                    id="address"
+                    maxlength="1000"
+                    autocomplete="street-address"
+                    required
+                    placeholder="استان، شهر، خیابان، کوچه، پلاک و واحد"
+                ></textarea>
+            </div>
+
+            <button id="submitButton" class="submit" type="submit">
+                ثبت سفارش
+            </button>
+
+        </form>
+    </section>
+
+    <aside class="box">
+        <h2>خلاصه سفارش شما</h2>
+
+        <div id="orderSummary"></div>
+
+        <div class="total">
+            <span>جمع کل</span>
+            <strong id="grandTotal">۰ تومان</strong>
+        </div>
+
+        <p style="font-size:12px;color:#78817b;line-height:2;margin-top:17px">
+            هزینه ارسال در صورت نیاز، پس از هماهنگی مشخص خواهد شد.
+        </p>
+    </aside>
+
+</div>
+
+</main><footer>
+    ZENVIA | محصولات شرکت بیز، به قیمت کارخانه
+</footer><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="supabase.js"></script><script>
+"use strict";
+
+const CART_KEY = "zenvia_cart";
+
+const emptyState = document.getElementById("emptyState");
+const checkoutLayout = document.getElementById("checkoutLayout");
+const orderSummary = document.getElementById("orderSummary");
+const grandTotal = document.getElementById("grandTotal");
+const orderForm = document.getElementById("orderForm");
+const submitButton = document.getElementById("submitButton");
+const messageElement = document.getElementById("message");
+
+let currentCart = [];
+
+function getCart() {
+    try {
+        const data = JSON.parse(localStorage.getItem(CART_KEY) || "[]");
+        return Array.isArray(data) ? data : [];
+    } catch {
+        return [];
+    }
+}
+
+function formatPrice(price) {
+    return Number(price || 0).toLocaleString("fa-IR") + " تومان";
+}
+
+function escapeHTML(value) {
+    return String(value ?? "").replace(/[&<>"']/g, char => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;"
+    })[char]);
+}
+
+function showMessage(text, type) {
+    messageElement.textContent = text;
+    messageElement.className = "message " + type;
+    messageElement.style.display = "block";
+}
+
+function renderSummary() {
+    currentCart = getCart();
+
+    if (currentCart.length === 0) {
+        emptyState.style.display = "block";
+        checkoutLayout.style.display = "none";
+        return;
     }
 
-    userMessage.textContent="حساب کاربری شما آماده ثبت سفارش است.";
-    submitButton.disabled=false;
-    await loadOrders();
+    emptyState.style.display = "none";
+    checkoutLayout.style.display = "grid";
 
-  }catch(error){
-    console.error(error);
-    userMessage.textContent="خطا در اتصال به حساب کاربری.";
-    showOrdersMessage("دریافت اطلاعات با خطا مواجه شد.");
-  }
+    let total = 0;
+
+    orderSummary.innerHTML = currentCart.map(item => {
+        const quantity = Math.max(1, Number(item.quantity) || 1);
+        const price = Number(item.price) || 0;
+        const subtotal = quantity * price;
+
+        total += subtotal;
+
+        return `
+            <div class="summary-item">
+                <span>
+                    ${escapeHTML(item.name)}
+                    × ${quantity.toLocaleString("fa-IR")}
+                </span>
+                <strong>${formatPrice(subtotal)}</strong>
+            </div>
+        `;
+    }).join("");
+
+    grandTotal.textContent = formatPrice(total);
 }
 
-async function submitOrder(event){
-  event.preventDefault();
+async function submitOrder(event) {
+    event.preventDefault();
 
-  if(!db||!currentUser){
-    alert("ابتدا وارد حساب کاربری شوید.");
-    return;
-  }
+    currentCart = getCart();
 
-  const cart=readCart();
-
-  if(cart.length===0){
-    alert("سبد خرید شما خالی است.");
-    return;
-  }
-
-  const name=document.getElementById("customerName").value.trim();
-  const phone=document.getElementById("phone").value.trim();
-  const address=document.getElementById("address").value.trim();
-
-  if(!name||!phone||!address){
-    alert("لطفاً تمام اطلاعات را تکمیل کنید.");
-    return;
-  }
-
-  submitButton.disabled=true;
-  submitButton.textContent="در حال ثبت سفارش...";
-
-  try{
-    // قیمت و موجودی باید در سرور دوباره بررسی شوند.
-    // این نسخه تا آماده شدن تابع امن ثبت سفارش، عمداً سفارش ثبت نمی‌کند.
-    throw new Error("ORDER_FUNCTION_NOT_CONFIGURED");
-
-  }catch(error){
-    console.error(error);
-    alert("ثبت سفارش هنوز فعال نشده است. ابتدا باید تابع امن ثبت سفارش در Supabase راه‌اندازی شود.");
-  }finally{
-    submitButton.disabled=false;
-    submitButton.textContent="ثبت سفارش";
-  }
-}
-
-function readCart(){
-  try{
-    const cart=JSON.parse(localStorage.getItem(CART_KEY)||"[]");
-    return Array.isArray(cart)?cart:[];
-  }catch{
-    return [];
-  }
-}
-
-async function loadOrders(){
-  try{
-    const {data,error}=await db
-      .from("orders")
-      .select("id,total_amount,status,created_at")
-      .eq("user_id",currentUser.id)
-      .order("created_at",{ascending:false});
-
-    if(error)throw error;
-
-    if(!data||data.length===0){
-      showOrdersMessage("هنوز سفارشی ثبت نکرده‌اید.");
-      return;
+    if (currentCart.length === 0) {
+        showMessage("سبد خرید شما خالی است.", "error");
+        return;
     }
 
-    ordersList.className="";
-    ordersList.replaceChildren();
+    const name = document.getElementById("customerName").value.trim();
+    const phone = document.getElementById("phone").value.trim();
+    const address = document.getElementById("address").value.trim();
 
-    data.forEach(order=>{
-      const card=document.createElement("div");
-      card.className="order";
+    if (name.length < 3) {
+        showMessage("نام و نام خانوادگی را کامل وارد کنید.", "error");
+        return;
+    }
 
-      const number=document.createElement("div");
-      number.textContent="شماره سفارش: "+order.id;
+    if (phone.length < 8) {
+        showMessage("شماره تلفن معتبر وارد کنید.", "error");
+        return;
+    }
 
-      const amount=document.createElement("p");
-      amount.textContent="مبلغ: "+money(order.total_amount);
+    if (address.length < 10) {
+        showMessage("آدرس کامل‌تری وارد کنید.", "error");
+        return;
+    }
 
-      const status=document.createElement("span");
-      status.className="status";
-      status.textContent=order.status||"در انتظار بررسی";
+    const zenvia = window.ZENVIA_SUPABASE;
 
-      const date=document.createElement("p");
-      date.className="small";
-      date.textContent=order.created_at
-        ?new Date(order.created_at).toLocaleString("fa-IR")
-        :"";
+    if (!zenvia || typeof zenvia.getClient !== "function") {
+        showMessage("اتصال Supabase برقرار نیست. فایل supabase.js را بررسی کنید.", "error");
+        return;
+    }
 
-      card.append(number,amount,status,date);
-      ordersList.appendChild(card);
-    });
+    const client = zenvia.getClient();
 
-  }catch(error){
-    console.error(error);
-    showOrdersMessage("خطا در دریافت سفارش‌ها. لطفاً بعداً تلاش کنید.");
-  }
+    if (!client) {
+        showMessage("اتصال به دیتابیس برقرار نشد.", "error");
+        return;
+    }
+
+    submitButton.disabled = true;
+    submitButton.textContent = "در حال ثبت سفارش...";
+
+    try {
+        const { data: authData, error: authError } = await client.auth.getUser();
+
+        if (authError || !authData.user) {
+            showMessage("برای ثبت سفارش ابتدا وارد حساب کاربری خود شوید.", "error");
+            return;
+        }
+
+        const items = currentCart.map(item => ({
+            product_id: item.id,
+            quantity: Math.max(1, Number(item.quantity) || 1)
+        }));
+
+        const { data, error } = await client.functions.invoke(
+            "create-order",
+            {
+                body: {
+                    customer_name: name,
+                    phone: phone,
+                    address: address,
+                    items: items
+                }
+            }
+        );
+
+        if (error) {
+            console.error("Order error:", error);
+            throw new Error("ثبت سفارش انجام نشد. لطفاً تنظیمات سرور را بررسی کنید.");
+        }
+
+        if (!data || data.success !== true || !data.order_id) {
+            throw new Error(data?.message || "پاسخ سرور برای ثبت سفارش معتبر نیست.");
+        }
+
+        localStorage.removeItem(CART_KEY);
+
+        orderForm.reset();
+
+        showMessage(
+            "سفارش شما با موفقیت ثبت شد. کد سفارش: " + data.order_id,
+            "success"
+        );
+
+        orderSummary.innerHTML = "";
+        grandTotal.textContent = formatPrice(0);
+
+        setTimeout(() => {
+            window.location.href = "index.html";
+        }, 4000);
+
+    } catch (error) {
+        console.error(error);
+        showMessage(
+            error.message || "خطایی هنگام ثبت سفارش رخ داد.",
+            "error"
+        );
+    } finally {
+        submitButton.disabled = false;
+        submitButton.textContent = "ثبت سفارش";
+    }
 }
 
-initialize();
-</script>
-</body>
+orderForm.addEventListener("submit", submitOrder);
+
+renderSummary();
+</script></body>
 </html>
