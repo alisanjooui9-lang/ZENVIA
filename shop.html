@@ -2,142 +2,422 @@
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#073b32">
+<meta name="description" content="فروشگاه زنویا؛ محصولات شرکت بیز، به قیمت کارخانه">
 <title>فروشگاه | ZENVIA</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
-:root{
---green:#073b32;
---green2:#105b49;
---gold:#c5a66b;
---bg:#f7faf7;
---white:#fff;
---text:#1d3027;
---muted:#78857d;
---border:#e7ede8;
-}
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:Vazirmatn,sans-serif;background:var(--bg);color:var(--text)}
-a{text-decoration:none;color:inherit}
-button,input,select{font-family:inherit}
-.container{width:min(1200px,92%);margin:auto}
-
-header{
-background:white;border-bottom:1px solid var(--border);
-position:sticky;top:0;z-index:20
-}
-.nav{
-height:75px;display:flex;justify-content:space-between;
-align-items:center;gap:15px
-}
-.logo{font-size:23px;font-weight:800;color:var(--green);letter-spacing:2px}
-.logo small{display:block;font-size:10px;letter-spacing:0;color:var(--muted)}
-.nav-links{display:flex;gap:25px;font-size:13px}
-.nav-links a:hover{color:var(--green2)}
-.nav-buttons{display:flex;gap:9px}
-.nav-buttons a{
-border:1px solid var(--border);padding:10px 13px;
-border-radius:10px;font-size:12px
+:root {
+  --green:#073b32;
+  --green2:#105b49;
+  --mint:#d9eee4;
+  --gold:#c5a66b;
+  --bg:#f8faf8;
+  --text:#182b24;
+  --muted:#718078;
+  --white:#fff;
+  --border:#e7eee9;
+  --shadow:0 12px 35px rgba(7,59,50,.07);
 }
 
-.hero{
-background:linear-gradient(120deg,#073b32,#145c49);
-color:white;padding:55px 0
-}
-.hero h1{font-size:32px}
-.hero p{font-size:13px;color:#d4e5dc;margin-top:12px}
-
-main{padding:35px 0 75px}
-
-.toolbar{
-background:white;padding:20px;border:1px solid var(--border);
-border-radius:17px;display:grid;
-grid-template-columns:2fr 1fr 1fr;gap:12px
-}
-.field{
-height:47px;border:1px solid var(--border);
-border-radius:11px;background:#fff;
-padding:0 13px;width:100%;outline:none;font-size:12px
-}
-.field:focus{border-color:var(--green2)}
-
-.result-heading{
-display:flex;justify-content:space-between;
-align-items:center;margin:35px 0 20px
-}
-.result-heading h2{font-size:20px;color:var(--green)}
-.result-count{font-size:12px;color:var(--muted)}
-
-.grid{
-display:grid;grid-template-columns:repeat(4,1fr);gap:18px
-}
-.card{
-background:white;border:1px solid var(--border);
-border-radius:17px;overflow:hidden;transition:.2s
-}
-.card:hover{transform:translateY(-4px);box-shadow:0 10px 25px #00000009}
-.card-image{
-width:100%;aspect-ratio:1/1;object-fit:cover;
-background:#edf3ee;display:block
-}
-.card-info{padding:15px}
-.card-name{font-size:14px;font-weight:600;line-height:2}
-.card-description{
-font-size:11px;color:var(--muted);
-margin-top:5px;line-height:2;
-display:-webkit-box;-webkit-line-clamp:2;
--webkit-box-orient:vertical;overflow:hidden
-}
-.card-price{
-font-size:16px;color:var(--green);
-font-weight:800;margin-top:12px
-}
-.stock{
-font-size:10px;color:#26835a;margin-top:7px
-}
-.view-btn{
-display:block;text-align:center;background:var(--green);
-color:white;padding:11px;border-radius:10px;
-font-size:12px;margin-top:13px
-}
-.empty{
-background:white;border:1px dashed #cbd9ce;
-border-radius:18px;padding:65px 20px;
-text-align:center;grid-column:1/-1
-}
-.empty-icon{font-size:45px;margin-bottom:15px}
-.empty h3{color:var(--green);font-size:17px}
-.empty p{color:var(--muted);font-size:12px;margin-top:10px;line-height:2}
-
-.loading{grid-column:1/-1;text-align:center;padding:55px;color:var(--muted)}
-
-.pagination{
-display:flex;justify-content:center;gap:8px;margin-top:30px
-}
-.pagination button{
-padding:10px 16px;border:1px solid var(--border);
-background:white;border-radius:9px;cursor:pointer
-}
-.pagination button:disabled{opacity:.4;cursor:not-allowed}
-
-footer{
-background:#082c25;color:white;text-align:center;
-padding:30px 15px;font-size:12px
+* {
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
 }
 
-@media(max-width:850px){
-.grid{grid-template-columns:repeat(3,1fr)}
+body {
+  font-family:'Vazirmatn',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.8;
 }
-@media(max-width:650px){
-.nav-links{display:none}
-.toolbar{grid-template-columns:1fr}
-.grid{grid-template-columns:repeat(2,1fr);gap:10px}
-.hero h1{font-size:25px}
-.card-info{padding:11px}
-.card-name{font-size:12px}
-.card-price{font-size:13px}
+
+a {
+  text-decoration:none;
+  color:inherit;
+}
+
+button,input,select {
+  font-family:inherit;
+}
+
+.container {
+  width:min(1160px,92%);
+  margin:auto;
+}
+
+/* Header */
+
+header {
+  background:rgba(255,255,255,.96);
+  border-bottom:1px solid var(--border);
+  position:sticky;
+  top:0;
+  z-index:100;
+  backdrop-filter:blur(15px);
+}
+
+.navbar {
+  min-height:76px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+}
+
+.logo {
+  color:var(--green);
+  font-size:25px;
+  font-weight:800;
+  letter-spacing:2px;
+}
+
+.logo span {
+  color:var(--gold);
+}
+
+.nav-links {
+  display:flex;
+  align-items:center;
+  gap:25px;
+  color:#53635b;
+  font-size:14px;
+}
+
+.nav-links a:hover {
+  color:var(--green2);
+}
+
+.cart-button {
+  background:var(--green);
+  color:white;
+  padding:10px 17px;
+  border-radius:11px;
+  font-size:13px;
+}
+
+.menu-button {
+  display:none;
+  background:white;
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:7px 12px;
+  font-size:20px;
+}
+
+/* Page heading */
+
+.page-hero {
+  background:linear-gradient(120deg,#073b32,#105b49);
+  color:white;
+  padding:55px 0;
+}
+
+.page-hero small {
+  color:#e8d4a9;
+}
+
+.page-hero h1 {
+  font-size:35px;
+  margin:8px 0;
+}
+
+.page-hero p {
+  color:#d4e4dc;
+  font-size:14px;
+}
+
+/* Shop */
+
+.shop-section {
+  padding:55px 0 80px;
+}
+
+.shop-top {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:15px;
+  margin-bottom:25px;
+  flex-wrap:wrap;
+}
+
+.shop-title h2 {
+  color:var(--green);
+  font-size:23px;
+}
+
+.shop-title p {
+  color:var(--muted);
+  font-size:12px;
+}
+
+.result-count {
+  color:var(--muted);
+  font-size:13px;
+}
+
+.filters {
+  background:white;
+  border:1px solid var(--border);
+  border-radius:17px;
+  padding:20px;
+  display:grid;
+  grid-template-columns:2fr 1fr 1fr;
+  gap:13px;
+  margin-bottom:28px;
+  box-shadow:var(--shadow);
+}
+
+.field {
+  display:flex;
+  flex-direction:column;
+  gap:7px;
+}
+
+.field label {
+  font-size:12px;
+  color:var(--muted);
+  font-weight:600;
+}
+
+.field input,
+.field select {
+  width:100%;
+  padding:12px;
+  border:1px solid var(--border);
+  border-radius:10px;
+  outline:none;
+  background:#fbfdfb;
+  color:var(--text);
+  font-size:13px;
+}
+
+.field input:focus,
+.field select:focus {
+  border-color:var(--green2);
+}
+
+.clear-button {
+  border:0;
+  background:var(--mint);
+  color:var(--green);
+  padding:11px;
+  border-radius:10px;
+  font-weight:700;
+  margin-top:18px;
+}
+
+/* Product cards */
+
+.products-grid {
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:18px;
+}
+
+.product-card {
+  background:white;
+  border:1px solid var(--border);
+  border-radius:17px;
+  overflow:hidden;
+  transition:.2s;
+}
+
+.product-card:hover {
+  transform:translateY(-5px);
+  box-shadow:var(--shadow);
+}
+
+.product-image {
+  height:195px;
+  background:#f0f5f1;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+}
+
+.product-image img {
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.no-image {
+  color:var(--muted);
+  font-size:12px;
+}
+
+.product-info {
+  padding:15px;
+}
+
+.product-info h3 {
+  color:var(--green);
+  font-size:14px;
+  margin-bottom:7px;
+}
+
+.product-description {
+  color:var(--muted);
+  font-size:11px;
+  min-height:42px;
+  margin-bottom:8px;
+}
+
+.product-price {
+  color:var(--green2);
+  font-size:15px;
+  font-weight:800;
+  margin-bottom:10px;
+}
+
+.product-stock {
+  color:#648071;
+  font-size:11px;
+  margin-bottom:12px;
+}
+
+.product-link {
+  display:block;
+  text-align:center;
+  background:var(--green);
+  color:white;
+  padding:10px;
+  border-radius:9px;
+  font-size:12px;
+  font-weight:700;
+}
+
+.product-link:hover {
+  background:var(--green2);
+}
+
+/* Messages */
+
+.message {
+  grid-column:1/-1;
+  text-align:center;
+  background:white;
+  border:1px solid var(--border);
+  border-radius:17px;
+  padding:45px 20px;
+  color:var(--muted);
+}
+
+.message strong {
+  display:block;
+  color:var(--green);
+  font-size:17px;
+  margin-bottom:8px;
+}
+
+.retry-button {
+  margin-top:15px;
+  background:var(--green);
+  color:white;
+  border:0;
+  border-radius:9px;
+  padding:10px 20px;
+  font-size:12px;
+}
+
+/* Footer */
+
+footer {
+  background:#052c25;
+  color:white;
+  padding:35px 0 18px;
+  text-align:center;
+}
+
+footer h3 {
+  color:#e8d4a9;
+  margin-bottom:8px;
+}
+
+footer p {
+  color:#c5d6ce;
+  font-size:12px;
+}
+
+.copyright {
+  margin-top:22px;
+  padding-top:15px;
+  border-top:1px solid rgba(255,255,255,.12);
+  color:#9fb5aa;
+  font-size:11px;
+}
+
+@media(max-width:850px) {
+  .nav-links {
+    display:none;
+    position:absolute;
+    top:76px;
+    right:0;
+    left:0;
+    background:white;
+    padding:20px 5%;
+    flex-direction:column;
+    align-items:stretch;
+    border-bottom:1px solid var(--border);
+  }
+
+  .nav-links.open {
+    display:flex;
+  }
+
+  .menu-button {
+    display:block;
+  }
+
+  .products-grid {
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .filters {
+    grid-template-columns:1fr 1fr;
+  }
+
+  .search-field {
+    grid-column:1/-1;
+  }
+}
+
+@media(max-width:500px) {
+  .page-hero h1 {
+    font-size:27px;
+  }
+
+  .filters {
+    grid-template-columns:1fr;
+  }
+
+  .search-field {
+    grid-column:auto;
+  }
+
+  .products-grid {
+    gap:11px;
+  }
+
+  .product-image {
+    height:145px;
+  }
+
+  .product-info {
+    padding:11px;
+  }
+
+  .product-description {
+    min-height:55px;
+  }
 }
 </style>
 </head>
@@ -145,282 +425,351 @@ padding:30px 15px;font-size:12px
 <body>
 
 <header>
-<div class="container nav">
-<a href="index.html" class="logo">
-ZENVIA
-<small>YOUR EVERYDAY DESTINATION</small>
-</a>
+  <div class="container navbar">
+    <a href="index.html" class="logo">ZENVIA<span>.</span></a>
 
-<nav class="nav-links">
-<a href="index.html">صفحه اصلی</a>
-<a href="shop.html">فروشگاه</a>
-<a href="ai.html">دستیار خرید هوشمند</a>
-<a href="orders.html">پیگیری سفارش</a>
-</nav>
+    <nav class="nav-links" id="navLinks">
+      <a href="index.html">صفحه اصلی</a>
+      <a href="shop.html">فروشگاه</a>
+      <a href="index.html#categories">دسته‌بندی‌ها</a>
+      <a href="ai.html">دستیار خرید</a>
+      <a href="login.html">حساب کاربری</a>
+    </nav>
 
-<div class="nav-buttons">
-<a href="cart.html">🛒 سبد خرید</a>
-</div>
-</div>
+    <div style="display:flex;gap:10px;align-items:center">
+      <a href="cart.html" class="cart-button">سبد خرید</a>
+      <button class="menu-button" id="menuButton">☰</button>
+    </div>
+  </div>
 </header>
 
-<section class="hero">
-<div class="container">
-<h1>فروشگاه زنویا</h1>
-<p>محصولات شرکت بیز، به قیمت کارخانه</p>
-</div>
-</section>
+<main>
 
-<main class="container">
+  <section class="page-hero">
+    <div class="container">
+      <small>فروشگاه اینترنتی زنویا</small>
+      <h1>فروشگاه محصولات</h1>
+      <p>محصولات شرکت بیز، به قیمت کارخانه</p>
+    </div>
+  </section>
 
-<section class="toolbar">
+  <section class="shop-section">
+    <div class="container">
 
-<input
-id="search"
-class="field"
-type="search"
-placeholder="نام محصول موردنظر را جست‌وجو کن..."
-autocomplete="off"
->
+      <div class="shop-top">
+        <div class="shop-title">
+          <h2>همه محصولات</h2>
+          <p>محصولات واقعی ثبت‌شده در فروشگاه</p>
+        </div>
 
-<select id="category" class="field">
-<option value="">همه دسته‌بندی‌ها</option>
-<option value="cosmetics">آرایشی و زیبایی</option>
-<option value="health">سلامت و بهداشت</option>
-<option value="food">خوراکی و نوشیدنی</option>
-<option value="other">سایر محصولات</option>
-</select>
+        <div class="result-count" id="resultCount">
+          در حال دریافت اطلاعات...
+        </div>
+      </div>
 
-<select id="sort" class="field">
-<option value="newest">جدیدترین محصولات</option>
-<option value="cheap">ارزان‌ترین</option>
-<option value="expensive">گران‌ترین</option>
-</select>
+      <div class="filters">
 
-</section>
+        <div class="field search-field">
+          <label for="searchInput">جست‌وجوی محصول</label>
+          <input
+            type="search"
+            id="searchInput"
+            placeholder="نام محصول را وارد کنید..."
+          >
+        </div>
 
-<div class="result-heading">
-<h2>محصولات</h2>
-<span class="result-count" id="count">در حال دریافت...</span>
-</div>
+        <div class="field">
+          <label for="categoryFilter">دسته‌بندی</label>
+          <select id="categoryFilter">
+            <option value="all">همه دسته‌بندی‌ها</option>
+            <option value="cosmetics">آرایشی و زیبایی</option>
+            <option value="health">سلامت و بهداشت</option>
+            <option value="food">خوراکی و نوشیدنی</option>
+            <option value="other">سایر محصولات</option>
+          </select>
+        </div>
 
-<section class="grid" id="products">
-<div class="loading">در حال دریافت محصولات...</div>
-</section>
+        <div class="field">
+          <label for="sortFilter">مرتب‌سازی</label>
+          <select id="sortFilter">
+            <option value="newest">جدیدترین</option>
+            <option value="price-low">ارزان‌ترین</option>
+            <option value="price-high">گران‌ترین</option>
+            <option value="name">نام محصول</option>
+          </select>
+        </div>
 
-<div class="pagination">
-<button id="prev" disabled>قبلی</button>
-<button id="next" disabled>بعدی</button>
-</div>
+      </div>
+
+      <div class="products-grid" id="productsGrid">
+        <div class="message">
+          <strong>در حال دریافت محصولات...</strong>
+          لطفاً صبر کنید.
+        </div>
+      </div>
+
+    </div>
+  </section>
 
 </main>
 
 <footer>
-© 2026 ZENVIA — تمامی حقوق محفوظ است.
+  <div class="container">
+    <h3>ZENVIA</h3>
+    <p>محصولات شرکت بیز، به قیمت کارخانه</p>
+
+    <div class="copyright">
+      تمامی حقوق این وب‌سایت متعلق به زنویا است.
+    </div>
+  </div>
 </footer>
 
-<script type="module">
-import {createClient} from
-'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
 
-/* تنظیمات اتصال */
-const SUPABASE_URL='';
-const SUPABASE_ANON_KEY='';
+<script>
+"use strict";
 
-const productsElement=document.getElementById('products');
-const searchInput=document.getElementById('search');
-const categoryInput=document.getElementById('category');
-const sortInput=document.getElementById('sort');
-const countElement=document.getElementById('count');
+const grid = document.getElementById("productsGrid");
+const searchInput = document.getElementById("searchInput");
+const categoryFilter = document.getElementById("categoryFilter");
+const sortFilter = document.getElementById("sortFilter");
+const resultCount = document.getElementById("resultCount");
 
-const PAGE_SIZE=16;
-let page=0;
-let supabase=null;
-let timer=null;
+let allProducts = [];
 
-function message(title,description,icon='🛍️'){
-productsElement.innerHTML=`
-<div class="empty">
-<div class="empty-icon">${icon}</div>
-<h3>${title}</h3>
-<p>${description}</p>
-</div>`;
-countElement.textContent='۰ محصول';
-document.getElementById('prev').disabled=true;
-document.getElementById('next').disabled=true;
+function showMessage(title, description, retry = false) {
+  grid.innerHTML = "";
+
+  const box = document.createElement("div");
+  box.className = "message";
+
+  const heading = document.createElement("strong");
+  heading.textContent = title;
+
+  const paragraph = document.createElement("p");
+  paragraph.textContent = description;
+
+  box.append(heading, paragraph);
+
+  if (retry) {
+    const button = document.createElement("button");
+    button.className = "retry-button";
+    button.textContent = "تلاش دوباره";
+    button.addEventListener("click", loadProducts);
+    box.appendChild(button);
+  }
+
+  grid.appendChild(box);
 }
 
-function safeText(value){
-return String(value??'');
+function formatPrice(price) {
+  return new Intl.NumberFormat("fa-IR").format(Number(price)) + " تومان";
 }
 
-function makeCard(product){
-const card=document.createElement('article');
-card.className='card';
+function createProductCard(product, connection) {
+  const card = document.createElement("article");
+  card.className = "product-card";
 
-const link=document.createElement('a');
-link.href='product.html?id='+encodeURIComponent(product.id);
+  const imageBox = document.createElement("div");
+  imageBox.className = "product-image";
 
-const img=document.createElement('img');
-img.className='card-image';
-img.src=product.image_url||'';
-img.alt=safeText(product.name);
-img.loading='lazy';
+  const imageUrl = product.image_url ||
+    (product.image_path
+      ? connection.getPublicImageUrl(product.image_path)
+      : "");
 
-const info=document.createElement('div');
-info.className='card-info';
+  if (imageUrl) {
+    const image = document.createElement("img");
+    image.src = imageUrl;
+    image.alt = product.name || "تصویر محصول";
+    image.loading = "lazy";
 
-const name=document.createElement('h3');
-name.className='card-name';
-name.textContent=safeText(product.name);
+    image.onerror = () => {
+      image.remove();
+      const fallback = document.createElement("span");
+      fallback.className = "no-image";
+      fallback.textContent = "تصویر در دسترس نیست";
+      imageBox.appendChild(fallback);
+    };
 
-const description=document.createElement('p');
-description.className='card-description';
-description.textContent=safeText(product.description);
+    imageBox.appendChild(image);
+  } else {
+    const fallback = document.createElement("span");
+    fallback.className = "no-image";
+    fallback.textContent = "تصویری ثبت نشده است";
+    imageBox.appendChild(fallback);
+  }
 
-const price=document.createElement('div');
-price.className='card-price';
-price.textContent=Number(product.price).toLocaleString('fa-IR')+' تومان';
+  const info = document.createElement("div");
+  info.className = "product-info";
 
-const stock=document.createElement('div');
-stock.className='stock';
-stock.textContent='موجود در فروشگاه';
+  const name = document.createElement("h3");
+  name.textContent = product.name || "بدون نام";
 
-const btn=document.createElement('div');
-btn.className='view-btn';
-btn.textContent='مشاهده محصول';
+  const description = document.createElement("p");
+  description.className = "product-description";
+  description.textContent = product.description || "توضیحاتی برای این محصول ثبت نشده است.";
 
-info.append(name,description,price,stock,btn);
-link.append(img,info);
-card.append(link);
+  const price = document.createElement("div");
+  price.className = "product-price";
+  price.textContent = formatPrice(product.price);
 
-img.onerror=()=>img.remove();
+  const stock = document.createElement("div");
+  stock.className = "product-stock";
+  stock.textContent = "موجودی: " + new Intl.NumberFormat("fa-IR").format(product.stock);
 
-return card;
+  const link = document.createElement("a");
+  link.className = "product-link";
+  link.href = "product.html?id=" + encodeURIComponent(product.id);
+  link.textContent = "مشاهده جزئیات";
+
+  info.append(name, description, price, stock, link);
+  card.append(imageBox, info);
+
+  return card;
 }
 
-async function loadProducts(){
+function renderProducts() {
+  const search = searchInput.value.trim().toLocaleLowerCase("fa");
+  const category = categoryFilter.value;
+  const sort = sortFilter.value;
 
-if(!supabase){
-message(
-'اتصال فروشگاه تنظیم نشده است',
-'ابتدا اطلاعات اتصال Supabase در تنظیمات این فایل وارد شود.',
-'⚙️'
-);
-return;
+  let filtered = allProducts.filter(product => {
+    const name = String(product.name || "").toLocaleLowerCase("fa");
+    const description = String(product.description || "").toLocaleLowerCase("fa");
+
+    const matchesSearch =
+      !search ||
+      name.includes(search) ||
+      description.includes(search);
+
+    const matchesCategory =
+      category === "all" ||
+      product.category === category;
+
+    return matchesSearch && matchesCategory;
+  });
+
+  if (sort === "price-low") {
+    filtered.sort((a, b) => Number(a.price) - Number(b.price));
+  } else if (sort === "price-high") {
+    filtered.sort((a, b) => Number(b.price) - Number(a.price));
+  } else if (sort === "name") {
+    filtered.sort((a, b) =>
+      String(a.name || "").localeCompare(String(b.name || ""), "fa")
+    );
+  } else {
+    filtered.sort((a, b) =>
+      new Date(b.created_at) - new Date(a.created_at)
+    );
+  }
+
+  resultCount.textContent =
+    new Intl.NumberFormat("fa-IR").format(filtered.length) + " محصول";
+
+  grid.innerHTML = "";
+
+  if (filtered.length === 0) {
+    showMessage(
+      allProducts.length === 0
+        ? "هنوز محصولی ثبت نشده است"
+        : "محصولی پیدا نشد",
+      allProducts.length === 0
+        ? "پس از ثبت محصولات واقعی توسط مدیریت، آن‌ها در این قسمت نمایش داده می‌شوند."
+        : "عبارت جست‌وجو یا دسته‌بندی انتخاب‌شده را تغییر دهید."
+    );
+    return;
+  }
+
+  const connection = window.ZENVIA_SUPABASE;
+
+  filtered.forEach(product => {
+    grid.appendChild(createProductCard(product, connection));
+  });
 }
 
-productsElement.innerHTML='<div class="loading">در حال دریافت...</div>';
+async function loadProducts() {
+  showMessage("در حال دریافت محصولات...", "لطفاً صبر کنید.");
+  resultCount.textContent = "در حال بارگذاری...";
 
-try{
+  try {
+    const connection = window.ZENVIA_SUPABASE;
 
-let query=supabase
-.from('products')
-.select('id,name,description,price,image_url,stock,category,created_at',
-{count:'exact'})
-.eq('is_active',true)
-.gt('stock',0);
+    if (!connection) {
+      throw new Error("فایل supabase.js بارگذاری نشده است.");
+    }
 
-const search=searchInput.value.trim();
-const category=categoryInput.value;
+    const db = connection.getClient();
+    const table = connection.CONFIG.TABLES.PRODUCTS;
 
-if(search){
-const escaped=search.replace(/[,%()]/g,'');
-query=query.ilike('name','%'+escaped+'%');
+    const { data, error } = await db
+      .from(table)
+      .select("id,name,description,price,category,image_url,image_path,stock,is_active,created_at")
+      .eq("is_active", true)
+      .gt("stock", 0)
+      .order("created_at", { ascending: false });
+
+    if (error) {
+      throw error;
+    }
+
+    allProducts = data || [];
+
+    renderProducts();
+
+  } catch (error) {
+    console.error("ZENVIA shop error:", error);
+
+    allProducts = [];
+    resultCount.textContent = "خطا در دریافت اطلاعات";
+
+    showMessage(
+      "دریافت محصولات ناموفق بود",
+      "اتصال به Supabase یا دسترسی جدول products را بررسی کنید.",
+      true
+    );
+  }
 }
 
-if(category){
-query=query.eq('category',category);
+/* Filters */
+
+searchInput.addEventListener("input", renderProducts);
+categoryFilter.addEventListener("change", renderProducts);
+sortFilter.addEventListener("change", renderProducts);
+
+/* Category from URL */
+
+const params = new URLSearchParams(window.location.search);
+const requestedCategory = params.get("category");
+
+const validCategories = [
+  "cosmetics",
+  "health",
+  "food",
+  "other"
+];
+
+if (validCategories.includes(requestedCategory)) {
+  categoryFilter.value = requestedCategory;
 }
 
-if(sortInput.value==='cheap'){
-query=query.order('price',{ascending:true});
-}else if(sortInput.value==='expensive'){
-query=query.order('price',{ascending:false});
-}else{
-query=query.order('created_at',{ascending:false});
-}
+/* Mobile menu */
 
-const start=page*PAGE_SIZE;
-query=query.range(start,start+PAGE_SIZE-1);
+const menuButton = document.getElementById("menuButton");
+const navLinks = document.getElementById("navLinks");
 
-const {data,error,count}=await query;
-
-if(error) throw error;
-
-productsElement.innerHTML='';
-
-if(!data||data.length===0){
-message(
-'هنوز محصولی ثبت نشده است',
-'محصولی مطابق جست‌وجو یا فیلتر انتخاب‌شده پیدا نشد.'
-);
-return;
-}
-
-data.forEach(product=>{
-productsElement.appendChild(makeCard(product));
+menuButton.addEventListener("click", () => {
+  navLinks.classList.toggle("open");
 });
 
-countElement.textContent=
-Number(count||0).toLocaleString('fa-IR')+' محصول';
-
-document.getElementById('prev').disabled=page===0;
-document.getElementById('next').disabled=
-start+data.length>=count;
-
-}catch(error){
-console.error(error);
-message(
-'خطا در دریافت اطلاعات',
-'ارتباط با دیتابیس برقرار نشد. لطفاً بعداً تلاش کن.',
-'⚠️'
-);
-}
-}
-
-searchInput.addEventListener('input',()=>{
-clearTimeout(timer);
-timer=setTimeout(()=>{
-page=0;
-loadProducts();
-},350);
+navLinks.querySelectorAll("a").forEach(link => {
+  link.addEventListener("click", () => {
+    navLinks.classList.remove("open");
+  });
 });
 
-categoryInput.addEventListener('change',()=>{
-page=0;
-loadProducts();
-});
-
-sortInput.addEventListener('change',()=>{
-page=0;
-loadProducts();
-});
-
-document.getElementById('prev').addEventListener('click',()=>{
-if(page>0){
-page--;
-loadProducts();
-window.scrollTo({top:0,behavior:'smooth'});
-}
-});
-
-document.getElementById('next').addEventListener('click',()=>{
-page++;
-loadProducts();
-window.scrollTo({top:0,behavior:'smooth'});
-});
-
-if(SUPABASE_URL&&SUPABASE_ANON_KEY){
-supabase=createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
-}
-
-const params=new URLSearchParams(location.search);
-const initialCategory=params.get('category');
-
-if(['cosmetics','health','food','other'].includes(initialCategory)){
-categoryInput.value=initialCategory;
-}
+/* Start */
 
 loadProducts();
 </script>
