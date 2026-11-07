@@ -1,955 +1,886 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#073b32">
-<meta name="description" content="زنویا؛ محصولات شرکت بیز، به قیمت کارخانه">
-<title>ZENVIA | زنویا</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#073b32">
+  <meta name="description" content="زنویا؛ محصولات شرکت بیز، به قیمت کارخانه">
+  <title>زنویا | ZENVIA</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --green: #073b32;
+      --green2: #105b49;
+      --mint: #d9eee4;
+      --gold: #c5a66b;
+      --bg: #f8faf8;
+      --text: #182b24;
+      --muted: #718078;
+      --white: #fff;
+      --border: #e7eee9;
+      --shadow: 0 12px 35px rgba(7,59,50,.08);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Vazirmatn', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.8;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    button {
+      font-family: inherit;
+      cursor: pointer;
+    }
+
+    .container {
+      width: min(1160px, 92%);
+      margin: auto;
+    }
+
+    /* Header */
+
+    header {
+      background: rgba(255,255,255,.96);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(15px);
+    }
+
+    .navbar {
+      min-height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .logo {
+      color: var(--green);
+      font-size: 25px;
+      font-weight: 800;
+      letter-spacing: 2px;
+    }
+
+    .logo span {
+      color: var(--gold);
+    }
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-
-<style>
-:root {
-    --green:#073b32;
-    --green2:#105b49;
-    --mint:#d9eee4;
-    --gold:#c5a66b;
-    --bg:#f8faf8;
-    --text:#182b24;
-    --muted:#78857d;
-    --white:#ffffff;
-    --border:#e9eee9;
-    --radius:18px;
-}
-
-* {
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
-
-body {
-    font-family:'Vazirmatn',sans-serif;
-    background:var(--bg);
-    color:var(--text);
-}
-
-button,input {
-    font-family:inherit;
-}
-
-a {
-    text-decoration:none;
-    color:inherit;
-}
-
-.container {
-    width:min(1200px,92%);
-    margin:auto;
-}
-
-/* HEADER */
-
-header {
-    background:var(--white);
-    border-bottom:1px solid var(--border);
-    position:sticky;
-    top:0;
-    z-index:100;
-}
-
-.nav {
-    min-height:78px;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:20px;
-}
-
-.logo {
-    display:flex;
-    align-items:center;
-    gap:10px;
-}
-
-.logo-icon {
-    width:43px;
-    height:43px;
-    background:var(--green);
-    border-radius:13px;
-    display:grid;
-    place-items:center;
-    color:white;
-    font-size:23px;
-    font-weight:800;
-}
-
-.logo h1 {
-    font-size:23px;
-    color:var(--green);
-    letter-spacing:2px;
-}
-
-.logo small {
-    display:block;
-    font-size:10px;
-    color:var(--muted);
-    letter-spacing:1px;
-}
-
-.nav-links {
-    display:flex;
-    align-items:center;
-    gap:27px;
-    font-size:13px;
-    color:#536158;
-}
-
-.nav-links a:hover {
-    color:var(--green2);
-}
-
-.nav-actions {
-    display:flex;
-    gap:10px;
-    align-items:center;
-}
-
-.icon-btn {
-    width:42px;
-    height:42px;
-    border:1px solid var(--border);
-    background:white;
-    border-radius:13px;
-    cursor:pointer;
-    font-size:18px;
-}
-
-.menu-btn {
-    display:none;
-}
-
-/* HERO */
-
-.hero {
-    background:linear-gradient(125deg,#073b32,#105b49);
-    min-height:420px;
-    display:flex;
-    align-items:center;
-    position:relative;
-    overflow:hidden;
-    color:white;
-}
-
-.hero::before {
-    content:"";
-    position:absolute;
-    width:420px;
-    height:420px;
-    border:1px solid rgba(255,255,255,.13);
-    border-radius:50%;
-    left:-100px;
-    top:-150px;
-}
-
-.hero::after {
-    content:"";
-    position:absolute;
-    width:300px;
-    height:300px;
-    border:1px solid rgba(255,255,255,.12);
-    border-radius:50%;
-    left:0;
-    bottom:-190px;
-}
-
-.hero-content {
-    position:relative;
-    z-index:2;
-    max-width:650px;
-    padding:70px 0;
-}
-
-.hero-label {
-    display:inline-block;
-    padding:8px 15px;
-    border:1px solid rgba(255,255,255,.25);
-    border-radius:30px;
-    font-size:12px;
-    color:#e2d3ae;
-    margin-bottom:23px;
-}
-
-.hero h2 {
-    font-size:clamp(30px,5vw,51px);
-    line-height:1.6;
-    font-weight:800;
-}
-
-.hero h2 span {
-    color:#dfc48f;
-}
-
-.hero p {
-    color:#d2e3da;
-    font-size:15px;
-    line-height:2.3;
-    margin-top:14px;
-}
-
-.hero-buttons {
-    display:flex;
-    gap:12px;
-    margin-top:28px;
-    flex-wrap:wrap;
-}
-
-.btn {
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    padding:13px 23px;
-    border-radius:12px;
-    font-size:13px;
-    font-weight:600;
-    cursor:pointer;
-    border:none;
-}
-
-.btn-gold {
-    background:#d7bc88;
-    color:#183a2d;
-}
-
-.btn-outline {
-    border:1px solid rgba(255,255,255,.4);
-    color:white;
-    background:transparent;
-}
-
-/* BENEFITS */
-
-.benefits {
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:15px;
-    margin-top:-35px;
-    position:relative;
-    z-index:5;
-}
-
-.benefit {
-    background:white;
-    border:1px solid var(--border);
-    border-radius:16px;
-    padding:23px 17px;
-    display:flex;
-    align-items:center;
-    gap:14px;
-    box-shadow:0 8px 30px rgba(0,0,0,.035);
-}
-
-.benefit-icon {
-    width:45px;
-    height:45px;
-    border-radius:13px;
-    display:grid;
-    place-items:center;
-    background:#edf5ef;
-    font-size:21px;
-    flex-shrink:0;
-}
-
-.benefit h3 {
-    font-size:13px;
-    margin-bottom:5px;
-}
-
-.benefit p {
-    font-size:11px;
-    color:var(--muted);
-}
-
-/* SECTION */
-
-.section {
-    padding:75px 0;
-}
-
-.section-heading {
-    display:flex;
-    align-items:end;
-    justify-content:space-between;
-    margin-bottom:28px;
-    gap:15px;
-}
-
-.section-heading h2 {
-    font-size:23px;
-    color:var(--green);
-}
-
-.section-heading p {
-    font-size:12px;
-    color:var(--muted);
-    margin-top:8px;
-}
-
-/* CATEGORIES */
-
-.categories {
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:17px;
-}
-
-.category {
-    background:white;
-    border:1px solid var(--border);
-    border-radius:17px;
-    padding:25px 15px;
-    text-align:center;
-    transition:.2s;
-    cursor:pointer;
-}
-
-.category:hover {
-    transform:translateY(-4px);
-    border-color:#b8d5c4;
-}
-
-.category-icon {
-    width:65px;
-    height:65px;
-    border-radius:20px;
-    background:#edf5ef;
-    display:grid;
-    place-items:center;
-    margin:0 auto 15px;
-    font-size:28px;
-}
-
-.category h3 {
-    font-size:13px;
-}
-
-.category p {
-    font-size:10px;
-    color:var(--muted);
-    margin-top:7px;
-}
-
-/* PRODUCTS */
-
-.products-section {
-    background:#f0f5f0;
-}
-
-.product-grid {
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:18px;
-}
-
-.empty-state {
-    background:white;
-    border:1px dashed #cddbd0;
-    border-radius:20px;
-    padding:65px 20px;
-    text-align:center;
-    grid-column:1/-1;
-}
-
-.empty-icon {
-    font-size:45px;
-    margin-bottom:15px;
-}
-
-.empty-state h3 {
-    font-size:17px;
-    color:var(--green);
-}
-
-.empty-state p {
-    color:var(--muted);
-    font-size:12px;
-    margin-top:10px;
-    line-height:2;
-}
-
-.product-card {
-    background:white;
-    border:1px solid var(--border);
-    border-radius:17px;
-    overflow:hidden;
-}
-
-.product-card img {
-    width:100%;
-    aspect-ratio:1/1;
-    object-fit:cover;
-    display:block;
-}
-
-.product-info {
-    padding:15px;
-}
-
-.product-info h3 {
-    font-size:14px;
-    margin-bottom:9px;
-}
-
-.product-price {
-    color:var(--green);
-    font-weight:700;
-    font-size:15px;
-}
-
-/* ABOUT */
-
-.about {
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    align-items:center;
-    gap:50px;
-}
-
-.about-visual {
-    min-height:290px;
-    background:linear-gradient(140deg,#073b32,#1b7058);
-    border-radius:24px;
-    display:grid;
-    place-items:center;
-    color:white;
-    position:relative;
-    overflow:hidden;
-}
-
-.about-visual strong {
-    font-size:48px;
-    letter-spacing:5px;
-    position:relative;
-    z-index:2;
-}
-
-.about-visual::before {
-    content:"";
-    position:absolute;
-    width:280px;
-    height:280px;
-    border:1px solid #ffffff30;
-    border-radius:50%;
-}
-
-.about-content h2 {
-    font-size:27px;
-    color:var(--green);
-    line-height:1.8;
-}
-
-.about-content p {
-    font-size:13px;
-    color:var(--muted);
-    line-height:2.5;
-    margin-top:15px;
-}
-
-/* AI */
-
-.ai-banner {
-    background:#102f29;
-    border-radius:22px;
-    padding:35px;
-    color:white;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:20px;
-}
-
-.ai-banner h2 {
-    font-size:21px;
-}
-
-.ai-banner p {
-    font-size:12px;
-    color:#c2d8cd;
-    line-height:2.2;
-    margin-top:10px;
-}
-
-/* FOOTER */
-
-footer {
-    background:#082c25;
-    color:white;
-    padding:55px 0 20px;
-}
-
-.footer-grid {
-    display:grid;
-    grid-template-columns:2fr 1fr 1fr;
-    gap:35px;
-}
-
-.footer-brand h2 {
-    font-size:25px;
-    letter-spacing:2px;
-}
-
-.footer-brand p {
-    color:#b5c9be;
-    font-size:12px;
-    line-height:2.5;
-    margin-top:13px;
-    max-width:350px;
-}
-
-footer h3 {
-    font-size:14px;
-    margin-bottom:17px;
-}
-
-.footer-links {
-    display:grid;
-    gap:12px;
-    color:#c2d5ca;
-    font-size:12px;
-}
-
-.footer-bottom {
-    border-top:1px solid #ffffff20;
-    margin-top:40px;
-    padding-top:20px;
-    text-align:center;
-    font-size:11px;
-    color:#b5c9be;
-}
-
-/* RESPONSIVE */
-
-@media(max-width:800px) {
     .nav-links {
-        display:none;
-        position:absolute;
-        top:78px;
-        right:0;
-        left:0;
-        background:white;
-        padding:20px;
-        flex-direction:column;
-        align-items:stretch;
-        border-bottom:1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 27px;
+      color: #53635b;
+      font-size: 14px;
     }
 
-    .nav-links.open {
-        display:flex;
+    .nav-links a:hover {
+      color: var(--green2);
     }
 
-    .menu-btn {
-        display:block;
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
     }
+
+    .cart-button {
+      background: var(--green);
+      color: white;
+      padding: 10px 17px;
+      border-radius: 12px;
+      font-size: 13px;
+    }
+
+    .menu-button {
+      display: none;
+      border: 1px solid var(--border);
+      background: white;
+      padding: 8px 12px;
+      border-radius: 10px;
+      font-size: 20px;
+    }
+
+    /* Hero */
+
+    .hero {
+      background:
+        radial-gradient(circle at 15% 20%, rgba(197,166,107,.17), transparent 28%),
+        linear-gradient(120deg, #073b32, #105b49);
+      color: white;
+      padding: 100px 0;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .hero-content {
+      max-width: 700px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-label {
+      display: inline-block;
+      color: #e8d4a9;
+      border: 1px solid rgba(232,212,169,.4);
+      border-radius: 30px;
+      padding: 6px 16px;
+      font-size: 12px;
+      margin-bottom: 25px;
+    }
+
+    .hero h1 {
+      font-size: clamp(30px, 5vw, 53px);
+      line-height: 1.6;
+      margin-bottom: 15px;
+      font-weight: 800;
+    }
+
+    .hero h1 span {
+      color: #e8d4a9;
+    }
+
+    .hero p {
+      color: #d4e4dc;
+      font-size: 15px;
+      max-width: 550px;
+      margin-bottom: 30px;
+    }
+
+    .hero-button {
+      display: inline-block;
+      background: var(--gold);
+      color: #182b24;
+      padding: 13px 27px;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 14px;
+      transition: .2s;
+    }
+
+    .hero-button:hover {
+      transform: translateY(-3px);
+    }
+
+    /* Sections */
+
+    section {
+      padding: 75px 0;
+    }
+
+    .section-heading {
+      text-align: center;
+      margin-bottom: 35px;
+    }
+
+    .section-heading small {
+      color: var(--gold);
+      font-weight: 700;
+    }
+
+    .section-heading h2 {
+      color: var(--green);
+      font-size: 27px;
+      margin-top: 5px;
+    }
+
+    .section-heading p {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 8px;
+    }
+
+    /* Benefits */
 
     .benefits {
-        grid-template-columns:1fr;
-        margin-top:20px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
     }
+
+    .benefit {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 25px;
+      text-align: center;
+      box-shadow: var(--shadow);
+    }
+
+    .benefit-icon {
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+
+    .benefit h3 {
+      color: var(--green);
+      font-size: 16px;
+      margin-bottom: 6px;
+    }
+
+    .benefit p {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    /* Categories */
 
     .categories {
-        grid-template-columns:repeat(2,1fr);
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
     }
 
-    .product-grid {
-        grid-template-columns:repeat(2,1fr);
+    .category {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 17px;
+      padding: 25px 12px;
+      text-align: center;
+      transition: .2s;
     }
 
-    .about {
-        grid-template-columns:1fr;
+    .category:hover {
+      transform: translateY(-5px);
+      border-color: var(--gold);
     }
 
-    .footer-grid {
-        grid-template-columns:1fr;
+    .category-icon {
+      font-size: 30px;
+      margin-bottom: 8px;
     }
+
+    .category h3 {
+      color: var(--green);
+      font-size: 14px;
+    }
+
+    /* Products */
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+    }
+
+    .product-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 17px;
+      overflow: hidden;
+      transition: .2s;
+    }
+
+    .product-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow);
+    }
+
+    .product-image {
+      height: 190px;
+      background: #f0f5f1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .product-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .no-image {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .product-info {
+      padding: 15px;
+    }
+
+    .product-info h3 {
+      font-size: 14px;
+      color: var(--green);
+      margin-bottom: 8px;
+    }
+
+    .product-price {
+      color: var(--green2);
+      font-weight: 800;
+      font-size: 15px;
+      margin-bottom: 12px;
+    }
+
+    .product-link {
+      display: block;
+      text-align: center;
+      background: var(--mint);
+      color: var(--green);
+      padding: 9px;
+      border-radius: 9px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .products-message {
+      grid-column: 1 / -1;
+      text-align: center;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 17px;
+      padding: 40px 20px;
+      color: var(--muted);
+    }
+
+    .products-message strong {
+      display: block;
+      color: var(--green);
+      font-size: 17px;
+      margin-bottom: 7px;
+    }
+
+    /* About */
+
+    .about-box {
+      background: var(--mint);
+      border-radius: 22px;
+      padding: 40px;
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 30px;
+      align-items: center;
+    }
+
+    .about-box h2 {
+      color: var(--green);
+      font-size: 25px;
+      margin-bottom: 12px;
+    }
+
+    .about-box p {
+      color: #52675d;
+      font-size: 14px;
+    }
+
+    .about-mark {
+      text-align: center;
+      font-size: 65px;
+      color: var(--green);
+    }
+
+    /* AI */
 
     .ai-banner {
-        flex-direction:column;
-        align-items:flex-start;
-    }
-}
-
-@media(max-width:400px) {
-    .logo h1 {
-        font-size:19px;
-    }
-
-    .product-grid {
-        gap:10px;
+      background: var(--green);
+      border-radius: 22px;
+      padding: 38px;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
     }
 
-    .hero h2 {
-        font-size:29px;
+    .ai-banner h2 {
+      font-size: 22px;
+      margin-bottom: 7px;
     }
-}
-</style>
+
+    .ai-banner p {
+      color: #d4e4dc;
+      font-size: 13px;
+    }
+
+    .ai-button {
+      display: inline-block;
+      background: var(--gold);
+      color: var(--green);
+      padding: 12px 22px;
+      border-radius: 11px;
+      font-weight: 700;
+      white-space: nowrap;
+      font-size: 13px;
+    }
+
+    /* Footer */
+
+    footer {
+      background: #052c25;
+      color: white;
+      padding: 45px 0 20px;
+    }
+
+    .footer-content {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr;
+      gap: 30px;
+      margin-bottom: 30px;
+    }
+
+    footer h3 {
+      color: #e8d4a9;
+      margin-bottom: 12px;
+      font-size: 16px;
+    }
+
+    footer p,
+    footer a {
+      color: #c5d6ce;
+      font-size: 13px;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .copyright {
+      border-top: 1px solid rgba(255,255,255,.12);
+      padding-top: 18px;
+      text-align: center;
+      color: #9fb5aa;
+      font-size: 11px;
+    }
+
+    @media(max-width:850px) {
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 76px;
+        right: 0;
+        left: 0;
+        background: white;
+        padding: 20px 5%;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 15px;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .nav-links.open {
+        display: flex;
+      }
+
+      .menu-button {
+        display: block;
+      }
+
+      .products-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .categories {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .about-box {
+        grid-template-columns: 1fr;
+      }
+
+      .about-mark {
+        display: none;
+      }
+    }
+
+    @media(max-width:550px) {
+      .hero {
+        padding: 75px 0;
+      }
+
+      .benefits {
+        grid-template-columns: 1fr;
+      }
+
+      .ai-banner {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .footer-content {
+        grid-template-columns: 1fr;
+      }
+
+      .product-image {
+        height: 150px;
+      }
+
+      section {
+        padding: 55px 0;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
 <header>
-    <div class="container nav">
+  <div class="container navbar">
+    <a href="index.html" class="logo">ZENVIA<span>.</span></a>
 
-        <a href="index.html" class="logo">
-            <div class="logo-icon">Z</div>
-            <div>
-                <h1>ZENVIA</h1>
-                <small>YOUR EVERYDAY DESTINATION</small>
-            </div>
-        </a>
+    <nav class="nav-links" id="navLinks">
+      <a href="index.html">صفحه اصلی</a>
+      <a href="shop.html">فروشگاه</a>
+      <a href="#categories">دسته‌بندی‌ها</a>
+      <a href="#about">درباره زنویا</a>
+      <a href="ai.html">دستیار خرید</a>
+      <a href="login.html">حساب کاربری</a>
+    </nav>
 
-        <nav class="nav-links" id="navLinks">
-            <a href="index.html">صفحه اصلی</a>
-            <a href="shop.html">فروشگاه</a>
-            <a href="#categories">دسته‌بندی‌ها</a>
-            <a href="#about">درباره زنویا</a>
-            <a href="ai.html">دستیار خرید هوشمند</a>
-        </nav>
-
-        <div class="nav-actions">
-            <a href="cart.html">
-                <button class="icon-btn" aria-label="سبد خرید">🛒</button>
-            </a>
-            <button class="icon-btn menu-btn" id="menuBtn" aria-label="منو">☰</button>
-        </div>
-
+    <div class="nav-actions">
+      <a href="cart.html" class="cart-button">سبد خرید</a>
+      <button class="menu-button" id="menuButton" aria-label="باز کردن منو">☰</button>
     </div>
+  </div>
 </header>
 
 <main>
 
-<section class="hero">
+  <section class="hero">
     <div class="container">
-        <div class="hero-content">
+      <div class="hero-content">
+        <span class="hero-label">فروشگاه اینترنتی زنویا</span>
 
-            <span class="hero-label">ZENVIA • فروشگاه آنلاین</span>
+        <h1>
+          محصولات شرکت بیز،<br>
+          <span>به قیمت کارخانه</span>
+        </h1>
 
-            <h2>
-                محصولات شرکت بیز،
-                <br>
-                <span>به قیمت کارخانه</span>
-            </h2>
+        <p>
+          محصولات مورد نیاز خود را از فروشگاه زنویا مشاهده کنید
+          و با اطلاعات کامل برای خرید تصمیم بگیرید.
+        </p>
 
-            <p>
-                تجربه خرید آسان محصولات شرکت بیز،
-                با امکان مشاهده محصولات و ثبت سفارش آنلاین.
-            </p>
-
-            <div class="hero-buttons">
-                <a href="shop.html" class="btn btn-gold">مشاهده فروشگاه ←</a>
-                <a href="ai.html" class="btn btn-outline">دستیار خرید هوشمند</a>
-            </div>
-
-        </div>
+        <a href="shop.html" class="hero-button">مشاهده فروشگاه ←</a>
+      </div>
     </div>
-</section>
+  </section>
 
-<div class="container">
-    <section class="benefits">
-
+  <section>
+    <div class="container">
+      <div class="benefits">
         <div class="benefit">
-            <div class="benefit-icon">🏭</div>
-            <div>
-                <h3>محصولات شرکت بیز</h3>
-                <p>عرضه محصولات واقعی شرکت</p>
-            </div>
+          <div class="benefit-icon">✦</div>
+          <h3>محصولات واقعی</h3>
+          <p>نمایش محصولات ثبت‌شده در فروشگاه</p>
         </div>
 
         <div class="benefit">
-            <div class="benefit-icon">🛍️</div>
-            <div>
-                <h3>خرید آسان</h3>
-                <p>ثبت سفارش آنلاین</p>
-            </div>
+          <div class="benefit-icon">♧</div>
+          <h3>خرید آسان</h3>
+          <p>دسترسی ساده به محصولات و اطلاعات آن‌ها</p>
         </div>
 
         <div class="benefit">
-            <div class="benefit-icon">🤖</div>
-            <div>
-                <h3>دستیار خرید هوشمند</h3>
-                <p>کمک به انتخاب محصولات</p>
-            </div>
+          <div class="benefit-icon">◈</div>
+          <h3>پشتیبانی</h3>
+          <p>امکان ارتباط با مجموعه زنویا</p>
         </div>
+      </div>
+    </div>
+  </section>
 
-    </section>
-</div>
-
-<section class="section" id="categories">
+  <section id="categories">
     <div class="container">
+      <div class="section-heading">
+        <small>دسته‌بندی محصولات</small>
+        <h2>خرید بر اساس دسته‌بندی</h2>
+        <p>دسته مورد نظر خود را انتخاب کنید.</p>
+      </div>
 
-        <div class="section-heading">
-            <div>
-                <h2>دسته‌بندی محصولات</h2>
-                <p>محصول موردنظرت را راحت‌تر پیدا کن.</p>
-            </div>
-        </div>
+      <div class="categories">
+        <a href="shop.html?category=cosmetics" class="category">
+          <div class="category-icon">✿</div>
+          <h3>آرایشی و زیبایی</h3>
+        </a>
 
-        <div class="categories">
+        <a href="shop.html?category=health" class="category">
+          <div class="category-icon">♧</div>
+          <h3>سلامت و بهداشت</h3>
+        </a>
 
-            <a href="shop.html?category=cosmetics" class="category">
-                <div class="category-icon">💄</div>
-                <h3>آرایشی و زیبایی</h3>
-                <p>مشاهده محصولات</p>
-            </a>
+        <a href="shop.html?category=food" class="category">
+          <div class="category-icon">☕</div>
+          <h3>خوراکی و نوشیدنی</h3>
+        </a>
 
-            <a href="shop.html?category=health" class="category">
-                <div class="category-icon">🌿</div>
-                <h3>سلامت و بهداشت</h3>
-                <p>مشاهده محصولات</p>
-            </a>
-
-            <a href="shop.html?category=food" class="category">
-                <div class="category-icon">☕</div>
-                <h3>خوراکی و نوشیدنی</h3>
-                <p>مشاهده محصولات</p>
-            </a>
-
-            <a href="shop.html?category=other" class="category">
-                <div class="category-icon">✨</div>
-                <h3>سایر محصولات</h3>
-                <p>مشاهده محصولات</p>
-            </a>
-
-        </div>
+        <a href="shop.html?category=other" class="category">
+          <div class="category-icon">◇</div>
+          <h3>سایر محصولات</h3>
+        </a>
+      </div>
     </div>
-</section>
+  </section>
 
-<section class="section products-section" id="products">
+  <section id="products">
     <div class="container">
+      <div class="section-heading">
+        <small>محصولات زنویا</small>
+        <h2>محصولات فروشگاه</h2>
+        <p>محصولات ثبت‌شده توسط مدیریت فروشگاه</p>
+      </div>
 
-        <div class="section-heading">
-            <div>
-                <h2>محصولات فروشگاه</h2>
-                <p>محصولات واقعی ثبت‌شده در زنویا</p>
-            </div>
-
-            <a href="shop.html" class="btn btn-gold">همه محصولات</a>
+      <div class="products-grid" id="productGrid">
+        <div class="products-message">
+          <strong>در حال دریافت محصولات...</strong>
+          لطفاً کمی صبر کنید.
         </div>
+      </div>
 
-        <div class="product-grid" id="productGrid">
-
-            <div class="empty-state">
-                <div class="empty-icon">🛍️</div>
-                <h3>در حال دریافت محصولات...</h3>
-                <p>لطفاً کمی صبر کنید.</p>
-            </div>
-
-        </div>
-
+      <div style="text-align:center;margin-top:28px">
+        <a href="shop.html" class="hero-button" style="background:#073b32;color:white">
+          مشاهده همه محصولات
+        </a>
+      </div>
     </div>
-</section>
+  </section>
 
-<section class="section" id="about">
-    <div class="container about">
-
-        <div class="about-visual">
-            <strong>ZENVIA</strong>
-        </div>
-
-        <div class="about-content">
-            <h2>خرید آسان، انتخاب مطمئن</h2>
-
-            <p>
-                زنویا با هدف فراهم‌کردن تجربه‌ای آسان برای خرید
-                محصولات شرکت بیز راه‌اندازی شده است.
-                در این فروشگاه می‌توانی محصولات ثبت‌شده را مشاهده
-                و سفارش خود را به‌صورت آنلاین ثبت کنی.
-            </p>
-
-            <a href="shop.html" class="btn btn-gold" style="margin-top:20px">
-                ورود به فروشگاه
-            </a>
-        </div>
-
-    </div>
-</section>
-
-<section class="section">
+  <section id="about">
     <div class="container">
-
-        <div class="ai-banner">
-
-            <div>
-                <h2>🤖 دستیار خرید هوشمند زنویا</h2>
-                <p>
-                    نمی‌دانی چه محصولی انتخاب کنی؟
-                    نیازت را بنویس تا دستیار هوشمند بر اساس محصولات واقعی
-                    فروشگاه، گزینه‌های مناسب را پیدا کند.
-                </p>
-            </div>
-
-            <a href="ai.html" class="btn btn-gold">
-                شروع گفتگو
-            </a>
-
+      <div class="about-box">
+        <div>
+          <h2>درباره زنویا</h2>
+          <p>
+            زنویا بستری برای معرفی و فروش محصولات شرکت بیز است.
+            هدف ما فراهم کردن تجربه‌ای ساده و منظم برای مشاهده
+            محصولات و ثبت سفارش است.
+          </p>
         </div>
 
+        <div class="about-mark">ZENVIA</div>
+      </div>
     </div>
-</section>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="ai-banner">
+        <div>
+          <h2>برای انتخاب محصول راهنمایی می‌خواهید؟</h2>
+          <p>از دستیار خرید زنویا برای پیدا کردن محصولات استفاده کنید.</p>
+        </div>
+
+        <a href="ai.html" class="ai-button">ورود به دستیار خرید ←</a>
+      </div>
+    </div>
+  </section>
 
 </main>
 
 <footer>
-    <div class="container">
+  <div class="container">
+    <div class="footer-content">
 
-        <div class="footer-grid">
+      <div>
+        <h3>ZENVIA</h3>
+        <p>محصولات شرکت بیز، به قیمت کارخانه</p>
+      </div>
 
-            <div class="footer-brand">
-                <h2>ZENVIA</h2>
-                <p>
-                    محصولات شرکت بیز، به قیمت کارخانه.
-                    تجربه‌ای ساده و راحت برای مشاهده محصولات
-                    و ثبت سفارش آنلاین.
-                </p>
-            </div>
-
-            <div>
-                <h3>دسترسی سریع</h3>
-                <div class="footer-links">
-                    <a href="index.html">صفحه اصلی</a>
-                    <a href="shop.html">فروشگاه</a>
-                    <a href="orders.html">پیگیری سفارش</a>
-                    <a href="ai.html">دستیار هوشمند</a>
-                </div>
-            </div>
-
-            <div>
-                <h3>حساب کاربری</h3>
-                <div class="footer-links">
-                    <a href="login.html">ورود / ثبت‌نام</a>
-                    <a href="cart.html">سبد خرید</a>
-                    <a href="orders.html">سفارش‌های من</a>
-                </div>
-            </div>
-
+      <div>
+        <h3>دسترسی سریع</h3>
+        <div class="footer-links">
+          <a href="index.html">صفحه اصلی</a>
+          <a href="shop.html">فروشگاه</a>
+          <a href="cart.html">سبد خرید</a>
+          <a href="login.html">حساب کاربری</a>
         </div>
+      </div>
 
-        <div class="footer-bottom">
-            © 2026 ZENVIA — تمامی حقوق محفوظ است.
+      <div>
+        <h3>خدمات زنویا</h3>
+        <div class="footer-links">
+          <a href="ai.html">دستیار خرید</a>
+          <a href="#about">درباره ما</a>
+          <a href="orders.html">پیگیری سفارش</a>
         </div>
+      </div>
 
     </div>
+
+    <div class="copyright">
+      تمامی حقوق این وب‌سایت متعلق به زنویا است.
+    </div>
+  </div>
 </footer>
 
-<script type="module">
-import { createClient } from
-'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+<!-- Supabase SDK -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-/*
-  تنظیمات اتصال Supabase
-  بعداً آدرس پروژه و کلید عمومی (anon/publishable) را قرار بده.
-*/
+<!-- اتصال مرکزی پروژه -->
+<script src="supabase.js"></script>
 
-const SUPABASE_URL = '';
-const SUPABASE_ANON_KEY = '';
+<script>
+"use strict";
 
-const productGrid = document.getElementById('productGrid');
+const productGrid = document.getElementById("productGrid");
 
-function showMessage(title, description, icon = '🛍️') {
-    productGrid.innerHTML = `
-        <div class="empty-state">
-            <div class="empty-icon">${icon}</div>
-            <h3>${title}</h3>
-            <p>${description}</p>
-        </div>
-    `;
+function showProductsMessage(title, description) {
+  productGrid.innerHTML = "";
+
+  const message = document.createElement("div");
+  message.className = "products-message";
+
+  const heading = document.createElement("strong");
+  heading.textContent = title;
+
+  const paragraph = document.createElement("p");
+  paragraph.textContent = description;
+
+  message.append(heading, paragraph);
+  productGrid.appendChild(message);
+}
+
+function formatPrice(price) {
+  return new Intl.NumberFormat("fa-IR").format(Number(price)) + " تومان";
+}
+
+function createProductCard(product, storageHelper) {
+  const card = document.createElement("article");
+  card.className = "product-card";
+
+  const imageBox = document.createElement("div");
+  imageBox.className = "product-image";
+
+  const imageUrl = product.image_url ||
+    (product.image_path
+      ? storageHelper.getPublicImageUrl(product.image_path)
+      : "");
+
+  if (imageUrl) {
+    const image = document.createElement("img");
+    image.src = imageUrl;
+    image.alt = product.name || "تصویر محصول";
+    image.loading = "lazy";
+
+    image.onerror = () => {
+      image.remove();
+      const fallback = document.createElement("span");
+      fallback.className = "no-image";
+      fallback.textContent = "تصویر در دسترس نیست";
+      imageBox.appendChild(fallback);
+    };
+
+    imageBox.appendChild(image);
+  } else {
+    const fallback = document.createElement("span");
+    fallback.className = "no-image";
+    fallback.textContent = "تصویری ثبت نشده است";
+    imageBox.appendChild(fallback);
+  }
+
+  const info = document.createElement("div");
+  info.className = "product-info";
+
+  const name = document.createElement("h3");
+  name.textContent = product.name || "بدون نام";
+
+  const price = document.createElement("div");
+  price.className = "product-price";
+  price.textContent = formatPrice(product.price);
+
+  const link = document.createElement("a");
+  link.className = "product-link";
+  link.href = "product.html?id=" + encodeURIComponent(product.id);
+  link.textContent = "مشاهده محصول";
+
+  info.append(name, price, link);
+  card.append(imageBox, info);
+
+  return card;
 }
 
 async function loadProducts() {
+  showProductsMessage(
+    "در حال دریافت محصولات...",
+    "لطفاً کمی صبر کنید."
+  );
 
-    if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
-        showMessage(
-            'هنوز محصولی ثبت نشده است',
-            'محصولات پس از راه‌اندازی پنل مدیریت و اتصال دیتابیس نمایش داده می‌شوند.'
-        );
-        return;
+  try {
+    const connection = window.ZENVIA_SUPABASE;
+
+    if (!connection) {
+      throw new Error("فایل supabase.js بارگذاری نشده است.");
     }
 
-    try {
+    const db = connection.getClient();
+    const table = connection.CONFIG.TABLES.PRODUCTS;
 
-        const supabase = createClient(
-            SUPABASE_URL,
-            SUPABASE_ANON_KEY
-        );
+    const { data, error } = await db
+      .from(table)
+      .select("id,name,description,price,image_url,image_path,stock,created_at")
+      .eq("is_active", true)
+      .gt("stock", 0)
+      .order("created_at", { ascending: false })
+      .limit(8);
 
-        const { data, error } = await supabase
-            .from('products')
-            .select('id,name,description,price,image_url,stock')
-            .eq('is_active', true)
-            .gt('stock', 0)
-            .order('created_at', { ascending: false })
-            .limit(8);
-
-        if (error) throw error;
-
-        if (!data || data.length === 0) {
-            showMessage(
-                'هنوز محصولی ثبت نشده است',
-                'به‌زودی محصولات واقعی فروشگاه در این قسمت نمایش داده می‌شوند.'
-            );
-            return;
-        }
-
-        productGrid.innerHTML = '';
-
-        data.forEach(product => {
-
-            const card = document.createElement('a');
-            card.className = 'product-card';
-            card.href = `product.html?id=${encodeURIComponent(product.id)}`;
-
-            const img = document.createElement('img');
-            img.src = product.image_url;
-            img.alt = product.name || 'تصویر محصول';
-            img.loading = 'lazy';
-
-            const info = document.createElement('div');
-            info.className = 'product-info';
-
-            const name = document.createElement('h3');
-            name.textContent = product.name;
-
-            const price = document.createElement('div');
-            price.className = 'product-price';
-            price.textContent =
-                Number(product.price).toLocaleString('fa-IR') + ' تومان';
-
-            info.append(name, price);
-            card.append(img, info);
-            productGrid.appendChild(card);
-
-            img.onerror = () => {
-                img.remove();
-            };
-        });
-
-    } catch (error) {
-
-        console.error('ZENVIA:', error);
-
-        showMessage(
-            'دریافت محصولات با مشکل مواجه شد',
-            'لطفاً اتصال اینترنت یا تنظیمات فروشگاه را بررسی کنید.',
-            '⚠️'
-        );
+    if (error) {
+      throw error;
     }
+
+    if (!data || data.length === 0) {
+      showProductsMessage(
+        "هنوز محصولی ثبت نشده است",
+        "پس از ثبت محصولات واقعی توسط مدیریت، آن‌ها در این قسمت نمایش داده می‌شوند."
+      );
+      return;
+    }
+
+    productGrid.innerHTML = "";
+
+    data.forEach(product => {
+      productGrid.appendChild(
+        createProductCard(product, connection)
+      );
+    });
+
+  } catch (error) {
+    console.error("ZENVIA products error:", error);
+
+    showProductsMessage(
+      "دریافت محصولات با مشکل مواجه شد",
+      "اتصال به پایگاه داده یا دریافت اطلاعات محصولات ناموفق بود. تنظیمات Supabase و دسترسی جدول products را بررسی کنید."
+    );
+  }
 }
 
-document.getElementById('menuBtn').addEventListener('click', () => {
-    document.getElementById('navLinks').classList.toggle('open');
+/* Mobile menu */
+
+const menuButton = document.getElementById("menuButton");
+const navLinks = document.getElementById("navLinks");
+
+menuButton.addEventListener("click", () => {
+  navLinks.classList.toggle("open");
 });
+
+navLinks.querySelectorAll("a").forEach(link => {
+  link.addEventListener("click", () => {
+    navLinks.classList.remove("open");
+  });
+});
+
+/* Start */
 
 loadProducts();
 </script>
