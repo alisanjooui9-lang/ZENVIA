@@ -2,187 +2,392 @@
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#073d32">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#073b32">
 <title>جزئیات محصول | ZENVIA</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
 <style>
-*{box-sizing:border-box}
-body{margin:0;font-family:Tahoma,Arial,sans-serif;background:#f5f8f6;color:#173b32}
+:root {
+  --green:#073b32;
+  --green2:#105b49;
+  --mint:#d9eee4;
+  --gold:#c5a66b;
+  --bg:#f8faf8;
+  --text:#182b24;
+  --muted:#718078;
+  --border:#e7eee9;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Vazirmatn,sans-serif;background:var(--bg);color:var(--text);line-height:1.9}
 a{text-decoration:none;color:inherit}
-header{background:#073d32;color:white;padding:18px 6%;display:flex;justify-content:space-between;align-items:center;gap:15px}
-.logo{font-size:25px;font-weight:bold;letter-spacing:2px;color:#d8bd79}
-nav{display:flex;gap:18px;font-size:13px;flex-wrap:wrap}
-main{max-width:1100px;margin:35px auto;padding:0 18px}
-.breadcrumb{font-size:13px;color:#71837b;margin-bottom:22px}
-.product{background:white;border-radius:22px;padding:25px;display:grid;grid-template-columns:1fr 1fr;gap:35px;box-shadow:0 8px 35px #173b3210}
-.photo{background:#f1f5f2;border-radius:18px;min-height:350px;display:flex;align-items:center;justify-content:center;overflow:hidden}
-.photo img{width:100%;height:100%;max-height:480px;object-fit:contain}
-.details{padding:12px 5px}
-.category{color:#a48a4f;font-size:13px}
-h1{font-size:27px;line-height:1.7;margin:12px 0}
-.description{color:#718078;line-height:2.2;font-size:14px;white-space:pre-wrap}
-.price{font-size:27px;font-weight:bold;color:#08785b;margin:22px 0}
-.stock{font-size:13px;color:#64766e;margin-bottom:20px}
-button{border:0;border-radius:12px;padding:15px 25px;font-family:inherit;font-size:14px;cursor:pointer}
-.add{background:#08785b;color:white;width:100%;font-weight:bold}
-.add:disabled{background:#aab8b1;cursor:not-allowed}
-.message{padding:35px;text-align:center;background:white;border-radius:18px;line-height:2}
-.back{display:inline-block;margin-top:20px;color:#08785b}
-@media(max-width:700px){header{align-items:flex-start;flex-direction:column}.product{grid-template-columns:1fr;padding:15px;gap:15px}.photo{min-height:270px}h1{font-size:22px}}
+button{font-family:inherit;cursor:pointer}
+.container{width:min(1100px,92%);margin:auto}
+header{background:white;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:10}
+.navbar{min-height:75px;display:flex;justify-content:space-between;align-items:center;gap:15px}
+.logo{font-size:25px;font-weight:800;letter-spacing:2px;color:var(--green)}
+.logo span{color:var(--gold)}
+.nav-links{display:flex;gap:22px;align-items:center;font-size:13px;color:#53635b}
+.cart-button{background:var(--green);color:white;padding:9px 16px;border-radius:10px;font-size:12px}
+.menu-button{display:none;background:white;border:1px solid var(--border);border-radius:9px;padding:7px 12px;font-size:19px}
+.breadcrumb{padding:22px 0;font-size:12px;color:var(--muted)}
+.breadcrumb a{color:var(--green2)}
+.product-layout{display:grid;grid-template-columns:1fr 1.1fr;gap:35px;background:white;border:1px solid var(--border);border-radius:22px;padding:28px;margin-bottom:55px}
+.product-image{min-height:360px;background:#f0f5f1;border-radius:16px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.product-image img{width:100%;height:100%;min-height:360px;object-fit:contain}
+.placeholder{color:var(--muted);font-size:13px}
+.product-info{padding:10px 0}
+.category{display:inline-block;background:var(--mint);color:var(--green);border-radius:20px;padding:5px 13px;font-size:11px;margin-bottom:14px}
+h1{font-size:27px;color:var(--green);margin-bottom:13px;line-height:1.7}
+.description{color:var(--muted);font-size:14px;white-space:pre-wrap;margin-bottom:20px}
+.price{color:var(--green2);font-size:25px;font-weight:800;margin-bottom:10px}
+.stock{font-size:13px;color:#547767;margin-bottom:20px}
+.purchase-row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.quantity{display:flex;align-items:center;border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.quantity button{border:0;background:#f3f7f4;padding:9px 15px;font-size:17px}
+.quantity span{min-width:38px;text-align:center}
+.add-button{border:0;background:var(--green);color:white;border-radius:10px;padding:12px 22px;font-weight:700;font-size:13px}
+.add-button:disabled{opacity:.5;cursor:not-allowed}
+.notice{margin-top:16px;padding:11px;border-radius:9px;font-size:12px;display:none}
+.notice.success{display:block;background:#e5f5eb;color:#17643d}
+.notice.error{display:block;background:#fff0ed;color:#a43d2e}
+.details{margin-bottom:65px}
+.details h2{color:var(--green);font-size:20px;margin-bottom:13px}
+.details-box{background:white;border:1px solid var(--border);border-radius:15px;padding:22px;color:var(--muted);font-size:14px;white-space:pre-wrap}
+.message{background:white;border:1px solid var(--border);border-radius:17px;padding:42px 20px;text-align:center;color:var(--muted);margin-bottom:55px}
+.message strong{display:block;color:var(--green);font-size:17px;margin-bottom:8px}
+.message a{display:inline-block;margin-top:15px;background:var(--green);color:white;padding:9px 20px;border-radius:9px;font-size:12px}
+footer{background:#052c25;color:#c5d6ce;padding:30px 0;text-align:center;font-size:12px}
+footer strong{color:#e8d4a9;font-size:20px}
+@media(max-width:750px){
+.nav-links{display:none;position:absolute;top:75px;right:0;left:0;background:white;padding:20px 5%;flex-direction:column;align-items:stretch;border-bottom:1px solid var(--border)}
+.nav-links.open{display:flex}
+.menu-button{display:block}
+.product-layout{grid-template-columns:1fr;padding:16px;gap:20px}
+.product-image,.product-image img{min-height:270px}
+h1{font-size:22px}
+}
 </style>
 </head>
+
 <body>
 
 <header>
-  <a class="logo" href="index.html">ZENVIA</a>
-  <nav>
-    <a href="index.html">صفحه اصلی</a>
-    <a href="shop.html">فروشگاه</a>
-    <a href="cart.html">سبد خرید</a>
-    <a href="login.html">حساب کاربری</a>
-  </nav>
+  <div class="container navbar">
+    <a href="index.html" class="logo">ZENVIA<span>.</span></a>
+    <nav class="nav-links" id="navLinks">
+      <a href="index.html">صفحه اصلی</a>
+      <a href="shop.html">فروشگاه</a>
+      <a href="ai.html">دستیار خرید</a>
+      <a href="login.html">حساب کاربری</a>
+    </nav>
+    <div style="display:flex;gap:10px;align-items:center">
+      <a href="cart.html" class="cart-button">سبد خرید</a>
+      <button class="menu-button" id="menuButton" aria-label="منو">☰</button>
+    </div>
+  </div>
 </header>
 
-<main>
-  <div class="breadcrumb"><a href="index.html">خانه</a> / <a href="shop.html">فروشگاه</a> / جزئیات محصول</div>
-  <section id="content" class="message">در حال دریافت اطلاعات محصول...</section>
+<main class="container">
+  <div class="breadcrumb">
+    <a href="index.html">خانه</a> ←
+    <a href="shop.html">فروشگاه</a> ← جزئیات محصول
+  </div>
+
+  <div id="productContent">
+    <div class="message">
+      <strong>در حال دریافت محصول...</strong>
+      لطفاً صبر کنید.
+    </div>
+  </div>
 </main>
 
-<script>
-const SUPABASE_URL = "";
-const SUPABASE_ANON_KEY = "";
+<footer>
+  <div class="container">
+    <strong>ZENVIA</strong>
+    <p>محصولات شرکت بیز، به قیمت کارخانه</p>
+  </div>
+</footer>
 
-const content = document.getElementById("content");
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
+<script src="app.js"></script>
+
+<script>
+"use strict";
+
+const content = document.getElementById("productContent");
 const productId = new URLSearchParams(location.search).get("id");
 
-function showMessage(message){
-  content.className = "message";
-  content.textContent = message;
+let currentProduct = null;
+let quantity = 1;
+
+const categoryNames = {
+  cosmetics:"آرایشی و زیبایی",
+  health:"سلامت و بهداشت",
+  food:"خوراکی و نوشیدنی",
+  other:"سایر محصولات"
+};
+
+function priceFormat(value) {
+  return new Intl.NumberFormat("fa-IR").format(Number(value)) + " تومان";
 }
 
-function formatPrice(value){
-  return Number(value).toLocaleString("fa-IR") + " تومان";
+function message(title, description) {
+  content.innerHTML = "";
+
+  const box = document.createElement("div");
+  box.className = "message";
+
+  const heading = document.createElement("strong");
+  heading.textContent = title;
+
+  const text = document.createElement("p");
+  text.textContent = description;
+
+  const link = document.createElement("a");
+  link.href = "shop.html";
+  link.textContent = "بازگشت به فروشگاه";
+
+  box.append(heading, text, link);
+  content.appendChild(box);
 }
 
-async function loadProduct(){
-  if(!SUPABASE_URL || !SUPABASE_ANON_KEY){
-    showMessage("اتصال پایگاه داده تنظیم نشده است.");
-    return;
-  }
+function notice(type, text) {
+  const element = document.getElementById("notice");
+  if (!element) return;
+  element.className = "notice " + type;
+  element.textContent = text;
+}
 
-  if(!productId){
-    showMessage("شناسه محصول معتبر نیست.");
-    return;
-  }
+function changeQuantity(amount) {
+  if (!currentProduct) return;
 
-  try{
-    const db = supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+  quantity = Math.max(
+    1,
+    Math.min(Number(currentProduct.stock), quantity + amount)
+  );
 
-    const {data,error} = await db
-      .from("products")
-      .select("id,name,description,price,image_url,stock,category,is_active")
-      .eq("id",productId)
-      .eq("is_active",true)
-      .maybeSingle();
+  document.getElementById("quantityValue").textContent =
+    new Intl.NumberFormat("fa-IR").format(quantity);
+}
 
-    if(error) throw error;
+function addToCart() {
+  if (!currentProduct) return;
 
-    if(!data){
-      showMessage("این محصول پیدا نشد یا در حال حاضر فعال نیست.");
+  try {
+    const key = "zenvia_cart";
+    const cart = JSON.parse(localStorage.getItem(key) || "[]");
+
+    if (!Array.isArray(cart)) {
+      throw new Error("Invalid cart");
+    }
+
+    const existing = cart.find(
+      item => String(item.id) === String(currentProduct.id)
+    );
+
+    const oldQuantity = existing ? Number(existing.quantity) : 0;
+
+    if (oldQuantity + quantity > Number(currentProduct.stock)) {
+      notice("error", "تعداد انتخابی بیشتر از موجودی محصول است.");
       return;
     }
 
-    renderProduct(data);
-  }catch(error){
+    if (existing) {
+      existing.quantity = oldQuantity + quantity;
+      existing.price = Number(currentProduct.price);
+      existing.name = currentProduct.name;
+    } else {
+      cart.push({
+        id: currentProduct.id,
+        name: currentProduct.name,
+        price: Number(currentProduct.price),
+        image_url: currentProduct.image_url || "",
+        image_path: currentProduct.image_path || "",
+        quantity
+      });
+    }
+
+    localStorage.setItem(key, JSON.stringify(cart));
+    notice("success", "محصول با موفقیت به سبد خرید اضافه شد.");
+
+  } catch (error) {
     console.error(error);
-    showMessage("دریافت اطلاعات محصول با خطا مواجه شد. لطفاً دوباره تلاش کنید.");
+    notice("error", "ذخیره سبد خرید انجام نشد.");
   }
 }
 
-function renderProduct(p){
-  content.className = "product";
+function renderProduct(product, connection) {
+  currentProduct = product;
+  document.title = product.name + " | ZENVIA";
 
-  const photo = document.createElement("div");
-  photo.className = "photo";
+  content.innerHTML = "";
 
-  if(p.image_url){
-    const img = document.createElement("img");
-    img.src = p.image_url;
-    img.alt = p.name || "تصویر محصول";
-    img.onerror = ()=>{img.remove();photo.textContent="تصویر محصول در دسترس نیست";};
-    photo.appendChild(img);
-  }else{
-    photo.textContent = "تصویری برای این محصول ثبت نشده است";
+  const layout = document.createElement("section");
+  layout.className = "product-layout";
+
+  const imageBox = document.createElement("div");
+  imageBox.className = "product-image";
+
+  const imageUrl = product.image_url ||
+    (product.image_path
+      ? connection.getPublicImageUrl(product.image_path)
+      : "");
+
+  if (imageUrl) {
+    const image = document.createElement("img");
+    image.src = imageUrl;
+    image.alt = product.name;
+
+    image.onerror = () => {
+      image.remove();
+      const fallback = document.createElement("span");
+      fallback.className = "placeholder";
+      fallback.textContent = "تصویر محصول در دسترس نیست";
+      imageBox.appendChild(fallback);
+    };
+
+    imageBox.appendChild(image);
+  } else {
+    const fallback = document.createElement("span");
+    fallback.className = "placeholder";
+    fallback.textContent = "تصویری ثبت نشده است";
+    imageBox.appendChild(fallback);
   }
 
-  const details = document.createElement("div");
-  details.className = "details";
+  const info = document.createElement("div");
+  info.className = "product-info";
 
-  const category = document.createElement("div");
+  const category = document.createElement("span");
   category.className = "category";
-  category.textContent = p.category || "سایر محصولات";
+  category.textContent = categoryNames[product.category] || "محصول زنویا";
 
   const name = document.createElement("h1");
-  name.textContent = p.name || "محصول بدون نام";
+  name.textContent = product.name;
 
-  const description = document.createElement("div");
+  const description = document.createElement("p");
   description.className = "description";
-  description.textContent = p.description || "توضیحاتی برای این محصول ثبت نشده است.";
+  description.textContent = product.description || "توضیحی ثبت نشده است.";
 
   const price = document.createElement("div");
   price.className = "price";
-  price.textContent = formatPrice(p.price);
+  price.textContent = priceFormat(product.price);
 
   const stock = document.createElement("div");
   stock.className = "stock";
-  stock.textContent = Number(p.stock)>0
-    ? "موجودی: " + Number(p.stock).toLocaleString("fa-IR") + " عدد"
-    : "این محصول در حال حاضر ناموجود است.";
+  stock.textContent = "موجودی: " +
+    new Intl.NumberFormat("fa-IR").format(product.stock) + " عدد";
 
-  const add = document.createElement("button");
-  add.className = "add";
-  add.textContent = "افزودن به سبد خرید";
-  add.disabled = Number(p.stock)<=0;
+  const purchase = document.createElement("div");
+  purchase.className = "purchase-row";
 
-  add.addEventListener("click",()=>{
-    try{
-      const cart = JSON.parse(localStorage.getItem("zenvia_cart") || "[]");
-      const existing = cart.find(item=>String(item.id)===String(p.id));
+  const quantityBox = document.createElement("div");
+  quantityBox.className = "quantity";
 
-      if(existing){
-        if(existing.quantity >= Number(p.stock)){
-          alert("تعداد انتخاب‌شده بیشتر از موجودی محصول است.");
-          return;
-        }
-        existing.quantity += 1;
-      }else{
-        cart.push({
-          id:p.id,
-          name:p.name,
-          price:Number(p.price),
-          image_url:p.image_url || "",
-          quantity:1
-        });
-      }
+  const minus = document.createElement("button");
+  minus.type = "button";
+  minus.textContent = "−";
+  minus.addEventListener("click", () => changeQuantity(-1));
 
-      localStorage.setItem("zenvia_cart",JSON.stringify(cart));
-      alert("محصول به سبد خرید اضافه شد.");
-    }catch(error){
-      alert("ذخیره سبد خرید انجام نشد.");
-    }
-  });
+  const quantityValue = document.createElement("span");
+  quantityValue.id = "quantityValue";
+  quantityValue.textContent = "۱";
 
-  const back = document.createElement("a");
-  back.className = "back";
-  back.href = "shop.html";
-  back.textContent = "بازگشت به فروشگاه";
+  const plus = document.createElement("button");
+  plus.type = "button";
+  plus.textContent = "+";
+  plus.addEventListener("click", () => changeQuantity(1));
 
-  details.append(category,name,description,price,stock,add,back);
-  content.append(photo,details);
+  quantityBox.append(minus, quantityValue, plus);
+
+  const addButton = document.createElement("button");
+  addButton.type = "button";
+  addButton.className = "add-button";
+  addButton.textContent = "افزودن به سبد خرید";
+  addButton.addEventListener("click", addToCart);
+
+  purchase.append(quantityBox, addButton);
+
+  const noticeBox = document.createElement("div");
+  noticeBox.id = "notice";
+  noticeBox.className = "notice";
+
+  info.append(category, name, description, price, stock, purchase, noticeBox);
+  layout.append(imageBox, info);
+  content.appendChild(layout);
+
+  const details = document.createElement("section");
+  details.className = "details";
+
+  const detailsTitle = document.createElement("h2");
+  detailsTitle.textContent = "توضیحات محصول";
+
+  const detailsText = document.createElement("div");
+  detailsText.className = "details-box";
+  detailsText.textContent = product.description || "توضیحات تکمیلی ثبت نشده است.";
+
+  details.append(detailsTitle, detailsText);
+  content.appendChild(details);
 }
+
+async function loadProduct() {
+  if (!productId) {
+    message(
+      "شناسه محصول مشخص نیست",
+      "برای مشاهده جزئیات، محصول را از فروشگاه انتخاب کنید."
+    );
+    return;
+  }
+
+  try {
+    const connection = window.ZENVIA_SUPABASE;
+
+    if (!connection) {
+      throw new Error("اتصال مرکزی بارگذاری نشده است.");
+    }
+
+    const db = connection.getClient();
+
+    const { data, error } = await db
+      .from(connection.CONFIG.TABLES.PRODUCTS)
+      .select("id,name,description,price,category,image_url,image_path,stock,is_active")
+      .eq("id", productId)
+      .eq("is_active", true)
+      .gt("stock", 0)
+      .maybeSingle();
+
+    if (error) throw error;
+
+    if (!data) {
+      message(
+        "محصول پیدا نشد",
+        "محصول حذف شده، غیرفعال است یا موجودی آن به پایان رسیده است."
+      );
+      return;
+    }
+
+    renderProduct(data, connection);
+
+  } catch (error) {
+    console.error("ZENVIA product error:", error);
+    message(
+      "دریافت اطلاعات محصول ناموفق بود",
+      "اتصال Supabase یا دسترسی جدول محصولات را بررسی کنید."
+    );
+  }
+}
+
+/* منوی موبایل */
+
+document.getElementById("menuButton").addEventListener("click", () => {
+  document.getElementById("navLinks").classList.toggle("open");
+});
 
 loadProduct();
 </script>
+
 </body>
 </html>
