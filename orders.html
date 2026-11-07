@@ -7,226 +7,224 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet"><style>
 :root {
-    --green: #073b32;
-    --light-green: #0d5949;
-    --gold: #c9a45c;
-    --bg: #f7f8f5;
-    --text: #202923;
-    --muted: #78817b;
-    --border: #e7ebe6;
-    --white: #fff;
-    --red: #bd4141;
+    --green:#073b32;
+    --light-green:#0d5949;
+    --gold:#c9a45c;
+    --bg:#f7f8f5;
+    --text:#202923;
+    --muted:#78817b;
+    --border:#e7ebe6;
+    --red:#bd4141;
 }
 
 * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
 }
 
 body {
-    font-family: "Vazirmatn", sans-serif;
-    background: var(--bg);
-    color: var(--text);
+    font-family:"Vazirmatn",sans-serif;
+    background:var(--bg);
+    color:var(--text);
 }
 
 a {
-    color: inherit;
-    text-decoration: none;
+    color:inherit;
+    text-decoration:none;
 }
 
 header {
-    background: var(--green);
-    color: white;
-    padding: 18px 5%;
+    background:var(--green);
+    color:white;
+    padding:18px 5%;
 }
 
 .header-inner {
-    max-width: 1050px;
-    margin: auto;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    max-width:1050px;
+    margin:auto;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
 }
 
 .logo {
-    font-size: 23px;
-    font-weight: 800;
+    font-size:23px;
+    font-weight:800;
 }
 
 .logo span {
-    color: var(--gold);
+    color:var(--gold);
 }
 
 .back {
-    font-size: 13px;
-    color: #e5eee9;
+    font-size:13px;
+    color:#e5eee9;
 }
 
 .container {
-    max-width: 1050px;
-    margin: 35px auto;
-    padding: 0 16px;
+    max-width:1050px;
+    margin:35px auto;
+    padding:0 16px;
 }
 
 h1 {
-    font-size: 25px;
-    margin-bottom: 7px;
+    font-size:25px;
+    margin-bottom:7px;
 }
 
 .subtitle {
-    color: var(--muted);
-    font-size: 13px;
-    margin-bottom: 25px;
+    color:var(--muted);
+    font-size:13px;
+    margin-bottom:25px;
 }
 
 .layout {
-    display: grid;
-    grid-template-columns: 1fr 330px;
-    gap: 20px;
-    align-items: start;
+    display:grid;
+    grid-template-columns:1fr 330px;
+    gap:20px;
+    align-items:start;
 }
 
 .box {
-    background: white;
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 22px;
+    background:white;
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:22px;
 }
 
 .box h2 {
-    font-size: 18px;
-    margin-bottom: 20px;
+    font-size:18px;
+    margin-bottom:20px;
 }
 
 .field {
-    margin-bottom: 17px;
+    margin-bottom:17px;
 }
 
 label {
-    display: block;
-    font-size: 13px;
-    font-weight: 600;
-    margin-bottom: 8px;
+    display:block;
+    font-size:13px;
+    font-weight:600;
+    margin-bottom:8px;
 }
 
-input,
-textarea {
-    width: 100%;
-    padding: 13px;
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    background: #fcfdfb;
-    font-family: inherit;
-    font-size: 14px;
-    outline: none;
+input,textarea {
+    width:100%;
+    padding:13px;
+    border:1px solid var(--border);
+    border-radius:10px;
+    background:#fcfdfb;
+    font-family:inherit;
+    font-size:14px;
+    outline:none;
 }
 
-input:focus,
-textarea:focus {
-    border-color: var(--light-green);
+input:focus,textarea:focus {
+    border-color:var(--light-green);
 }
 
 textarea {
-    min-height: 110px;
-    resize: vertical;
+    min-height:110px;
+    resize:vertical;
 }
 
 .summary-item {
-    display: flex;
-    justify-content: space-between;
-    gap: 10px;
-    padding: 12px 0;
-    border-bottom: 1px solid var(--border);
-    font-size: 13px;
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+    padding:12px 0;
+    border-bottom:1px solid var(--border);
+    font-size:13px;
 }
 
 .summary-item span {
-    color: var(--muted);
+    color:var(--muted);
 }
 
 .total {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
-    padding-top: 15px;
-    border-top: 1px solid var(--border);
-    font-weight: 800;
-    color: var(--green);
-    font-size: 17px;
+    display:flex;
+    justify-content:space-between;
+    margin-top:20px;
+    padding-top:15px;
+    border-top:1px solid var(--border);
+    font-weight:800;
+    color:var(--green);
+    font-size:17px;
 }
 
 .submit {
-    width: 100%;
-    margin-top: 22px;
-    padding: 14px;
-    border: 0;
-    border-radius: 10px;
-    background: var(--green);
-    color: white;
-    font-family: inherit;
-    font-size: 14px;
-    font-weight: 700;
-    cursor: pointer;
+    width:100%;
+    margin-top:22px;
+    padding:14px;
+    border:0;
+    border-radius:10px;
+    background:var(--green);
+    color:white;
+    font-family:inherit;
+    font-size:14px;
+    font-weight:700;
+    cursor:pointer;
 }
 
 .submit:disabled {
-    opacity: .55;
-    cursor: not-allowed;
+    opacity:.55;
+    cursor:not-allowed;
 }
 
 .message {
-    display: none;
-    padding: 13px;
-    border-radius: 10px;
-    margin-bottom: 17px;
-    font-size: 13px;
-    line-height: 1.9;
+    display:none;
+    padding:13px;
+    border-radius:10px;
+    margin-bottom:17px;
+    font-size:13px;
+    line-height:2;
+    overflow-wrap:anywhere;
 }
 
 .message.error {
-    display: block;
-    background: #fff0f0;
-    color: var(--red);
+    display:block;
+    background:#fff0f0;
+    color:var(--red);
 }
 
 .message.success {
-    display: block;
-    background: #eaf6ed;
-    color: #176b38;
+    display:block;
+    background:#eaf6ed;
+    color:#176b38;
 }
 
 .empty {
-    background: white;
-    padding: 40px 20px;
-    border-radius: 15px;
-    text-align: center;
+    background:white;
+    padding:40px 20px;
+    border-radius:15px;
+    text-align:center;
 }
 
 .empty p {
-    color: var(--muted);
-    margin: 10px 0 20px;
-    font-size: 13px;
+    color:var(--muted);
+    margin:10px 0 20px;
+    font-size:13px;
 }
 
 .empty a {
-    display: inline-block;
-    background: var(--green);
-    color: white;
-    padding: 12px 22px;
-    border-radius: 9px;
+    display:inline-block;
+    background:var(--green);
+    color:white;
+    padding:12px 22px;
+    border-radius:9px;
 }
 
 footer {
-    text-align: center;
-    padding: 25px 10px;
-    color: var(--muted);
-    font-size: 12px;
+    text-align:center;
+    padding:25px 10px;
+    color:var(--muted);
+    font-size:12px;
 }
 
-@media(max-width: 750px) {
+@media(max-width:750px) {
     .layout {
-        grid-template-columns: 1fr;
+        grid-template-columns:1fr;
     }
 }
 </style></head><body><header>
@@ -254,37 +252,31 @@ footer {
 
             <div class="field">
                 <label for="customerName">نام و نام خانوادگی</label>
-                <input
-                    id="customerName"
-                    type="text"
-                    maxlength="100"
-                    autocomplete="name"
-                    required
-                    placeholder="نام کامل خود را وارد کنید"
-                >
+                <input id="customerName"
+                       type="text"
+                       maxlength="100"
+                       autocomplete="name"
+                       required
+                       placeholder="نام کامل خود را وارد کنید">
             </div>
 
             <div class="field">
                 <label for="phone">شماره تلفن همراه</label>
-                <input
-                    id="phone"
-                    type="tel"
-                    maxlength="20"
-                    autocomplete="tel"
-                    required
-                    placeholder="شماره تماس"
-                >
+                <input id="phone"
+                       type="tel"
+                       maxlength="20"
+                       autocomplete="tel"
+                       required
+                       placeholder="شماره تماس">
             </div>
 
             <div class="field">
                 <label for="address">آدرس کامل تحویل</label>
-                <textarea
-                    id="address"
-                    maxlength="1000"
-                    autocomplete="street-address"
-                    required
-                    placeholder="استان، شهر، خیابان، کوچه، پلاک و واحد"
-                ></textarea>
+                <textarea id="address"
+                          maxlength="1000"
+                          autocomplete="street-address"
+                          required
+                          placeholder="استان، شهر، خیابان، کوچه، پلاک و واحد"></textarea>
             </div>
 
             <button id="submitButton" class="submit" type="submit">
@@ -305,7 +297,7 @@ footer {
         </div>
 
         <p style="font-size:12px;color:#78817b;line-height:2;margin-top:17px">
-            هزینه ارسال در صورت نیاز، پس از هماهنگی مشخص خواهد شد.
+            هزینه ارسال پس از هماهنگی مشخص خواهد شد.
         </p>
     </aside>
 
@@ -327,6 +319,23 @@ const submitButton = document.getElementById("submitButton");
 const messageElement = document.getElementById("message");
 
 let currentCart = [];
+let submitting = false;
+
+function getClient() {
+    const config = window.ZENVIA_SUPABASE;
+
+    if (!config || typeof config.getClient !== "function") {
+        throw new Error("اتصال Supabase برقرار نیست. فایل supabase.js را بررسی کنید.");
+    }
+
+    const client = config.getClient();
+
+    if (!client) {
+        throw new Error("اتصال دیتابیس برقرار نشد.");
+    }
+
+    return client;
+}
 
 function getCart() {
     try {
@@ -343,15 +352,15 @@ function formatPrice(price) {
 
 function escapeHTML(value) {
     return String(value ?? "").replace(/[&<>"']/g, char => ({
-        "&": "&amp;",
-        "<": "&lt;",
-        ">": "&gt;",
-        '"': "&quot;",
-        "'": "&#039;"
+        "&":"&amp;",
+        "<":"&lt;",
+        ">":"&gt;",
+        '"':"&quot;",
+        "'":"&#039;"
     })[char]);
 }
 
-function showMessage(text, type) {
+function showMessage(text,type) {
     messageElement.textContent = text;
     messageElement.className = "message " + type;
     messageElement.style.display = "block";
@@ -372,7 +381,7 @@ function renderSummary() {
     let total = 0;
 
     orderSummary.innerHTML = currentCart.map(item => {
-        const quantity = Math.max(1, Number(item.quantity) || 1);
+        const quantity = Math.max(1,Number(item.quantity) || 1);
         const price = Number(item.price) || 0;
         const subtotal = quantity * price;
 
@@ -395,10 +404,12 @@ function renderSummary() {
 async function submitOrder(event) {
     event.preventDefault();
 
+    if (submitting) return;
+
     currentCart = getCart();
 
-    if (currentCart.length === 0) {
-        showMessage("سبد خرید شما خالی است.", "error");
+    if (!currentCart.length) {
+        showMessage("سبد خرید شما خالی است.","error");
         return;
     }
 
@@ -406,101 +417,188 @@ async function submitOrder(event) {
     const phone = document.getElementById("phone").value.trim();
     const address = document.getElementById("address").value.trim();
 
-    if (name.length < 3) {
-        showMessage("نام و نام خانوادگی را کامل وارد کنید.", "error");
+    if (name.length < 3 || phone.length < 8 || address.length < 10) {
+        showMessage("لطفاً اطلاعات مشتری را کامل و صحیح وارد کنید.","error");
         return;
     }
 
-    if (phone.length < 8) {
-        showMessage("شماره تلفن معتبر وارد کنید.", "error");
-        return;
-    }
-
-    if (address.length < 10) {
-        showMessage("آدرس کامل‌تری وارد کنید.", "error");
-        return;
-    }
-
-    const zenvia = window.ZENVIA_SUPABASE;
-
-    if (!zenvia || typeof zenvia.getClient !== "function") {
-        showMessage("اتصال Supabase برقرار نیست. فایل supabase.js را بررسی کنید.", "error");
-        return;
-    }
-
-    const client = zenvia.getClient();
-
-    if (!client) {
-        showMessage("اتصال به دیتابیس برقرار نشد.", "error");
-        return;
-    }
-
+    submitting = true;
     submitButton.disabled = true;
-    submitButton.textContent = "در حال ثبت سفارش...";
+    submitButton.textContent = "در حال بررسی محصولات...";
 
     try {
-        const { data: authData, error: authError } = await client.auth.getUser();
+        const client = getClient();
+
+        // کاربر باید وارد حساب خود شده باشد.
+        const {data: authData,error: authError} =
+            await client.auth.getUser();
 
         if (authError || !authData.user) {
-            showMessage("برای ثبت سفارش ابتدا وارد حساب کاربری خود شوید.", "error");
-            return;
+            throw new Error("برای ثبت سفارش ابتدا وارد حساب کاربری شوید.");
         }
 
-        const items = currentCart.map(item => ({
-            product_id: item.id,
-            quantity: Math.max(1, Number(item.quantity) || 1)
+        const userId = authData.user.id;
+
+        // شناسه و تعداد محصولات از سبد خرید خوانده می‌شود.
+        const quantities = new Map();
+
+        for (const item of currentCart) {
+            const id = String(item.id || "");
+            const quantity = Number(item.quantity);
+
+            if (!id || !Number.isSafeInteger(quantity) ||
+                quantity < 1 || quantity > 100) {
+                throw new Error("اطلاعات یکی از محصولات معتبر نیست.");
+            }
+
+            quantities.set(id,(quantities.get(id) || 0) + quantity);
+        }
+
+        const productIds = [...quantities.keys()];
+
+        if (productIds.length > 50) {
+            throw new Error("تعداد محصولات سفارش بیش از حد مجاز است.");
+        }
+
+        // قیمت و موجودی از دیتابیس خوانده می‌شود.
+        submitButton.textContent = "در حال بررسی قیمت و موجودی...";
+
+        const {data: products,error: productError} = await client
+            .from("products")
+            .select("id,name,price,stock,is_active")
+            .in("id",productIds);
+
+        if (productError) throw productError;
+
+        if (!products || products.length !== productIds.length) {
+            throw new Error("یکی از محصولات دیگر در فروشگاه موجود نیست.");
+        }
+
+        let total = 0;
+        const orderItems = [];
+
+        for (const product of products) {
+            const quantity = quantities.get(String(product.id));
+            const price = Number(product.price);
+            const stock = Number(product.stock);
+
+            if (
+                product.is_active !== true ||
+                !Number.isFinite(price) ||
+                price < 0 ||
+                !Number.isFinite(stock) ||
+                stock < quantity
+            ) {
+                throw new Error(
+                    "محصول «" + product.name + "» غیرفعال است یا موجودی کافی ندارد."
+                );
+            }
+
+            const subtotal = price * quantity;
+
+            if (!Number.isFinite(subtotal)) {
+                throw new Error("مبلغ یکی از محصولات معتبر نیست.");
+            }
+
+            total += subtotal;
+
+            orderItems.push({
+                product_id: product.id,
+                product_name: product.name,
+                quantity: quantity,
+                unit_price: price,
+                subtotal: subtotal
+            });
+        }
+
+        if (!Number.isFinite(total) || total <= 0) {
+            throw new Error("مبلغ سفارش معتبر نیست.");
+        }
+
+        // ایجاد سفارش اصلی
+        submitButton.textContent = "در حال ثبت سفارش...";
+
+        const {data: order,error: orderError} = await client
+            .from("orders")
+            .insert({
+                user_id: userId,
+                customer_name: name,
+                phone: phone,
+                address: address,
+                total: 0,
+                status: "pending"
+            })
+            .select("id")
+            .single();
+
+        if (orderError) throw orderError;
+
+        if (!order || !order.id) {
+            throw new Error("شناسه سفارش دریافت نشد.");
+        }
+
+        // ثبت اقلام؛ تریگر دیتابیس قیمت و مبلغ را دوباره تعیین می‌کند.
+        const rows = orderItems.map(item => ({
+            ...item,
+            order_id: order.id
         }));
 
-        const { data, error } = await client.functions.invoke(
-            "create-order",
-            {
-                body: {
-                    customer_name: name,
-                    phone: phone,
-                    address: address,
-                    items: items
-                }
-            }
-        );
+        const {error: itemsError} = await client
+            .from("order_items")
+            .insert(rows);
 
-        if (error) {
-            console.error("Order error:", error);
-            throw new Error("ثبت سفارش انجام نشد. لطفاً تنظیمات سرور را بررسی کنید.");
+        if (itemsError) {
+            console.error("Order items error:",itemsError);
+
+            throw new Error(
+                "سفارش ایجاد شد اما ثبت اقلام آن کامل نشد. کد سفارش: " + order.id +
+                "؛ برای بررسی با مدیر فروشگاه تماس بگیرید."
+            );
         }
 
-        if (!data || data.success !== true || !data.order_id) {
-            throw new Error(data?.message || "پاسخ سرور برای ثبت سفارش معتبر نیست.");
-        }
+        // دریافت مبلغ نهایی محاسبه‌شده توسط دیتابیس
+        const {data: savedOrder,error: savedOrderError} = await client
+            .from("orders")
+            .select("id,total")
+            .eq("id",order.id)
+            .single();
+
+        if (savedOrderError) throw savedOrderError;
 
         localStorage.removeItem(CART_KEY);
 
         orderForm.reset();
 
         showMessage(
-            "سفارش شما با موفقیت ثبت شد. کد سفارش: " + data.order_id,
+            "سفارش با موفقیت ثبت شد. کد سفارش: " +
+            savedOrder.id +
+            " | مبلغ نهایی: " +
+            formatPrice(savedOrder.total),
             "success"
         );
 
         orderSummary.innerHTML = "";
-        grandTotal.textContent = formatPrice(0);
+        grandTotal.textContent = formatPrice(savedOrder.total);
 
-        setTimeout(() => {
-            window.location.href = "index.html";
-        }, 4000);
+        submitButton.textContent = "سفارش ثبت شد";
 
     } catch (error) {
-        console.error(error);
+        console.error("ZENVIA order error:",error);
+
         showMessage(
             error.message || "خطایی هنگام ثبت سفارش رخ داد.",
             "error"
         );
-    } finally {
+
         submitButton.disabled = false;
         submitButton.textContent = "ثبت سفارش";
+
+    } finally {
+        submitting = false;
     }
 }
 
-orderForm.addEventListener("submit", submitOrder);
+orderForm.addEventListener("submit",submitOrder);
 
 renderSummary();
 </script></body>
