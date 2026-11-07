@@ -7,8 +7,8 @@
   "use strict";
 
   const CONFIG = {
-    URL: "",
-    ANON_KEY: "",
+    URL: "https://tmhtfvbrcukvnlieqcno.supabase.co/rest/v1/",
+    ANON_KEY: "sb_publishable_KL5EIRCqYAt7pp1DjHo95Q_AR1VnN2N",
 
     STORAGE_BUCKET: "product-images",
 
