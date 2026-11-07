@@ -1,196 +1,528 @@
-<!DOCTYPE html>
-<html lang="fa" dir="rtl">
+<!DOCTYPE html><html lang="fa" dir="rtl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#073d32">
-<title>سبد خرید | ZENVIA</title>
-<style>
-*{box-sizing:border-box}
-body{margin:0;background:#f5f8f6;color:#173b32;font-family:Tahoma,Arial,sans-serif}
-header{background:#073d32;color:white;padding:18px 6%;display:flex;justify-content:space-between;align-items:center;gap:15px}
-.logo{font-size:25px;font-weight:bold;letter-spacing:2px;color:#d8bd79;text-decoration:none}
-nav{display:flex;gap:18px;flex-wrap:wrap;font-size:13px}
-nav a{color:white;text-decoration:none}
-main{max-width:1000px;margin:35px auto;padding:0 16px}
-h1{font-size:25px}
-.layout{display:grid;grid-template-columns:1fr 300px;gap:20px;align-items:start}
-.items,.summary{background:white;border-radius:18px;padding:20px;box-shadow:0 8px 30px #173b3210}
-.item{display:grid;grid-template-columns:95px 1fr auto;gap:15px;align-items:center;padding:15px 0;border-bottom:1px solid #edf1ee}
-.item img{width:95px;height:95px;object-fit:contain;background:#f2f5f3;border-radius:12px}
-.name{font-weight:bold;line-height:1.8}
-.price{color:#08785b;font-size:14px;margin-top:8px}
-.controls{display:flex;align-items:center;gap:9px;margin-top:10px}
-.controls button,.remove{border:0;border-radius:8px;padding:8px 12px;cursor:pointer;font-family:inherit}
-.controls button{background:#e8f2ed;color:#08785b}
-.remove{background:#fff0ed;color:#c44d39}
-.summary h2{font-size:18px}
-.total{font-size:23px;font-weight:bold;color:#08785b;margin:20px 0}
-.checkout{width:100%;border:0;background:#08785b;color:white;padding:15px;border-radius:11px;font-family:inherit;font-size:14px;cursor:pointer}
-.checkout:disabled{background:#aab8b1;cursor:not-allowed}
-.note{font-size:12px;line-height:2;color:#77857e;margin-top:15px}
-.empty{text-align:center;padding:50px 15px;line-height:2;color:#718078}
-.empty a{display:inline-block;color:#08785b;margin-top:15px}
-@media(max-width:700px){header{align-items:flex-start;flex-direction:column}.layout{grid-template-columns:1fr}.item{grid-template-columns:75px 1fr}.item img{width:75px;height:75px}.remove{grid-column:2;justify-self:start}}
-</style>
-</head>
-<body>
-
-<header>
-<a class="logo" href="index.html">ZENVIA</a>
-<nav>
-<a href="index.html">صفحه اصلی</a>
-<a href="shop.html">فروشگاه</a>
-<a href="orders.html">سفارش‌ها</a>
-<a href="login.html">حساب کاربری</a>
-</nav>
-</header>
-
-<main>
-<h1>سبد خرید شما</h1>
-<div id="content">در حال بارگذاری سبد خرید...</div>
-</main>
-
-<script>
-const CART_KEY="zenvia_cart";
-const content=document.getElementById("content");
-
-function getCart(){
-  try{
-    const value=JSON.parse(localStorage.getItem(CART_KEY)||"[]");
-    return Array.isArray(value)?value:[];
-  }catch{
-    return [];
-  }
+<meta name="theme-color" content="#073b32">
+<title>سبد خرید | ZENVIA</title><link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet"><style>
+:root {
+    --green: #073b32;
+    --green-light: #0d5949;
+    --gold: #c9a45c;
+    --bg: #f7f8f5;
+    --text: #202923;
+    --muted: #78817b;
+    --border: #e7ebe6;
+    --white: #fff;
+    --danger: #c34242;
 }
 
-function saveCart(cart){
-  localStorage.setItem(CART_KEY,JSON.stringify(cart));
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
-function money(value){
-  return Number(value).toLocaleString("fa-IR")+" تومان";
+body {
+    font-family: "Vazirmatn", sans-serif;
+    background: var(--bg);
+    color: var(--text);
 }
 
-function render(){
-  const cart=getCart();
-
-  if(cart.length===0){
-    content.innerHTML=`
-      <div class="items empty">
-        سبد خرید شما خالی است.
-        <br>
-        <a href="shop.html">مشاهده محصولات فروشگاه</a>
-      </div>`;
-    return;
-  }
-
-  const layout=document.createElement("div");
-  layout.className="layout";
-
-  const items=document.createElement("section");
-  items.className="items";
-
-  let total=0;
-
-  cart.forEach((product,index)=>{
-    const quantity=Math.max(1,Number(product.quantity)||1);
-    const price=Math.max(0,Number(product.price)||0);
-    total+=price*quantity;
-
-    const row=document.createElement("article");
-    row.className="item";
-
-    const img=document.createElement("img");
-    img.src=product.image_url||"";
-    img.alt=product.name||"محصول";
-    img.onerror=()=>{img.style.visibility="hidden";};
-
-    const info=document.createElement("div");
-
-    const name=document.createElement("div");
-    name.className="name";
-    name.textContent=product.name||"محصول بدون نام";
-
-    const priceText=document.createElement("div");
-    priceText.className="price";
-    priceText.textContent=money(price);
-
-    const controls=document.createElement("div");
-    controls.className="controls";
-
-    const minus=document.createElement("button");
-    minus.textContent="−";
-    minus.addEventListener("click",()=>changeQuantity(index,-1));
-
-    const count=document.createElement("span");
-    count.textContent=quantity.toLocaleString("fa-IR");
-
-    const plus=document.createElement("button");
-    plus.textContent="+";
-    plus.addEventListener("click",()=>changeQuantity(index,1));
-
-    controls.append(minus,count,plus);
-    info.append(name,priceText,controls);
-
-    const remove=document.createElement("button");
-    remove.className="remove";
-    remove.textContent="حذف";
-    remove.addEventListener("click",()=>removeProduct(index));
-
-    row.append(img,info,remove);
-    items.appendChild(row);
-  });
-
-  const summary=document.createElement("aside");
-  summary.className="summary";
-
-  const title=document.createElement("h2");
-  title.textContent="خلاصه سفارش";
-
-  const count=document.createElement("div");
-  count.textContent="تعداد محصولات: "+cart.reduce((sum,p)=>sum+(Number(p.quantity)||1),0).toLocaleString("fa-IR");
-
-  const totalText=document.createElement("div");
-  totalText.className="total";
-  totalText.textContent=money(total);
-
-  const checkout=document.createElement("button");
-  checkout.className="checkout";
-  checkout.textContent="ادامه و ثبت سفارش";
-  checkout.addEventListener("click",()=>{
-    location.href="orders.html";
-  });
-
-  const note=document.createElement("div");
-  note.className="note";
-  note.textContent="مبلغ نهایی، هزینه ارسال و موجودی محصولات هنگام ثبت سفارش باید از سرور بررسی شوند.";
-
-  summary.append(title,count,totalText,checkout,note);
-  layout.append(items,summary);
-  content.replaceChildren(layout);
+a {
+    color: inherit;
+    text-decoration: none;
 }
 
-function changeQuantity(index,amount){
-  const cart=getCart();
-  if(!cart[index])return;
-
-  const next=(Number(cart[index].quantity)||1)+amount;
-  if(next<1)return;
-
-  cart[index].quantity=next;
-  saveCart(cart);
-  render();
+header {
+    background: var(--green);
+    color: white;
+    padding: 18px 5%;
 }
 
-function removeProduct(index){
-  const cart=getCart();
-  cart.splice(index,1);
-  saveCart(cart);
-  render();
+.header-inner {
+    max-width: 1100px;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
 }
 
-render();
-</script>
-</body>
+.logo {
+    font-size: 23px;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+.logo span {
+    color: var(--gold);
+}
+
+.back-link {
+    font-size: 13px;
+    color: #e5eee9;
+}
+
+.container {
+    max-width: 1050px;
+    margin: 35px auto;
+    padding: 0 16px;
+}
+
+.page-title {
+    font-size: 25px;
+    font-weight: 800;
+    margin-bottom: 7px;
+}
+
+.subtitle {
+    color: var(--muted);
+    font-size: 13px;
+    margin-bottom: 25px;
+}
+
+.layout {
+    display: grid;
+    grid-template-columns: 1fr 310px;
+    gap: 20px;
+    align-items: start;
+}
+
+.cart-box,
+.summary {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px;
+}
+
+.cart-item {
+    display: grid;
+    grid-template-columns: 100px 1fr auto;
+    gap: 15px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.cart-item:first-child {
+    padding-top: 0;
+}
+
+.cart-item:last-child {
+    border-bottom: 0;
+    padding-bottom: 0;
+}
+
+.product-image {
+    width: 100px;
+    height: 100px;
+    border-radius: 12px;
+    background: #f0f3ef;
+    object-fit: cover;
+}
+
+.product-name {
+    font-weight: 700;
+    font-size: 15px;
+    margin: 5px 0;
+}
+
+.product-price {
+    color: var(--green-light);
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.quantity-control {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 12px;
+}
+
+.quantity-control button {
+    width: 29px;
+    height: 29px;
+    border: 1px solid var(--border);
+    background: #f8faf7;
+    border-radius: 8px;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.quantity-control span {
+    font-weight: 700;
+}
+
+.remove-button {
+    background: transparent;
+    border: 0;
+    color: var(--danger);
+    font-family: inherit;
+    font-size: 12px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.item-total {
+    font-size: 13px;
+    font-weight: 800;
+    white-space: nowrap;
+    padding-top: 8px;
+}
+
+.summary h2 {
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    font-size: 13px;
+    margin: 15px 0;
+    color: var(--muted);
+}
+
+.summary-row.total {
+    border-top: 1px solid var(--border);
+    padding-top: 18px;
+    color: var(--green);
+    font-size: 17px;
+    font-weight: 800;
+}
+
+.checkout-button,
+.continue-button {
+    display: block;
+    width: 100%;
+    text-align: center;
+    border: 0;
+    border-radius: 10px;
+    padding: 13px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.checkout-button {
+    background: var(--green);
+    color: white;
+    margin-top: 20px;
+}
+
+.checkout-button:disabled {
+    opacity: .5;
+    cursor: not-allowed;
+}
+
+.continue-button {
+    background: #edf3ef;
+    color: var(--green);
+    margin-top: 10px;
+}
+
+.empty {
+    text-align: center;
+    padding: 55px 15px;
+}
+
+.empty-icon {
+    font-size: 45px;
+    margin-bottom: 12px;
+}
+
+.empty h2 {
+    font-size: 19px;
+    margin-bottom: 8px;
+}
+
+.empty p {
+    color: var(--muted);
+    font-size: 13px;
+    margin-bottom: 20px;
+}
+
+.notice {
+    display: none;
+    padding: 12px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    font-size: 13px;
+    background: #fff3e8;
+    color: #94551d;
+}
+
+footer {
+    text-align: center;
+    padding: 25px 10px;
+    color: var(--muted);
+    font-size: 12px;
+}
+
+@media(max-width: 750px) {
+    .layout {
+        grid-template-columns: 1fr;
+    }
+
+    .summary {
+        order: -1;
+    }
+}
+
+@media(max-width: 450px) {
+    .cart-item {
+        grid-template-columns: 75px 1fr;
+        gap: 12px;
+    }
+
+    .product-image {
+        width: 75px;
+        height: 85px;
+    }
+
+    .item-total {
+        grid-column: 2;
+        padding-top: 0;
+    }
+}
+</style></head><body><header>
+    <div class="header-inner">
+        <a class="logo" href="index.html">ZEN<span>VIA</span></a>
+        <a class="back-link" href="shop.html">بازگشت به فروشگاه ←</a>
+    </div>
+</header><main class="container"><h1 class="page-title">سبد خرید</h1>
+<p class="subtitle">محصولات انتخاب‌شده خود را بررسی کنید.</p>
+
+<div id="notice" class="notice"></div>
+
+<section id="emptyCart" class="cart-box empty" style="display:none">
+    <div class="empty-icon">🛒</div>
+    <h2>سبد خرید شما خالی است</h2>
+    <p>هنوز محصولی به سبد خرید اضافه نکرده‌اید.</p>
+    <a class="continue-button" href="shop.html">مشاهده محصولات</a>
+</section>
+
+<section id="cartLayout" class="layout" style="display:none">
+
+    <div class="cart-box">
+        <div id="cartItems"></div>
+    </div>
+
+    <aside class="summary">
+        <h2>خلاصه سفارش</h2>
+
+        <div class="summary-row">
+            <span>تعداد محصولات</span>
+            <strong id="itemCount">۰</strong>
+        </div>
+
+        <div class="summary-row">
+            <span>جمع کل</span>
+            <strong id="subtotal">۰ تومان</strong>
+        </div>
+
+        <div class="summary-row">
+            <span>هزینه ارسال</span>
+            <strong>پس از ثبت سفارش</strong>
+        </div>
+
+        <div class="summary-row total">
+            <span>مبلغ محصولات</span>
+            <strong id="total">۰ تومان</strong>
+        </div>
+
+        <button id="checkoutButton" class="checkout-button">
+            ادامه و ثبت سفارش
+        </button>
+
+        <a class="continue-button" href="shop.html">
+            ادامه خرید
+        </a>
+    </aside>
+
+</section>
+
+</main><footer>
+    ZENVIA | محصولات شرکت بیز، به قیمت کارخانه
+</footer><script>
+"use strict";
+
+const CART_KEY = "zenvia_cart";
+
+const cartItemsElement = document.getElementById("cartItems");
+const emptyCartElement = document.getElementById("emptyCart");
+const cartLayoutElement = document.getElementById("cartLayout");
+const noticeElement = document.getElementById("notice");
+
+function getCart() {
+    try {
+        const cart = JSON.parse(localStorage.getItem(CART_KEY) || "[]");
+        return Array.isArray(cart) ? cart : [];
+    } catch {
+        return [];
+    }
+}
+
+function saveCart(cart) {
+    localStorage.setItem(CART_KEY, JSON.stringify(cart));
+}
+
+function formatPrice(price) {
+    return Number(price || 0).toLocaleString("fa-IR") + " تومان";
+}
+
+function escapeHTML(value) {
+    return String(value ?? "").replace(/[&<>"']/g, char => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;"
+    })[char]);
+}
+
+function getProductImage(item) {
+    if (item.image_url) return item.image_url;
+
+    if (
+        item.image_path &&
+        window.ZENVIA_SUPABASE &&
+        typeof window.ZENVIA_SUPABASE.getPublicImageUrl === "function"
+    ) {
+        return window.ZENVIA_SUPABASE.getPublicImageUrl(item.image_path);
+    }
+
+    return "";
+}
+
+function showNotice(message) {
+    noticeElement.textContent = message;
+    noticeElement.style.display = "block";
+}
+
+function renderCart() {
+    const cart = getCart();
+
+    if (cart.length === 0) {
+        emptyCartElement.style.display = "block";
+        cartLayoutElement.style.display = "none";
+        return;
+    }
+
+    emptyCartElement.style.display = "none";
+    cartLayoutElement.style.display = "grid";
+
+    let total = 0;
+    let count = 0;
+
+    cartItemsElement.innerHTML = cart.map(item => {
+        const price = Number(item.price) || 0;
+        const quantity = Math.max(1, Number(item.quantity) || 1);
+        const itemTotal = price * quantity;
+
+        total += itemTotal;
+        count += quantity;
+
+        const image = getProductImage(item);
+
+        return `
+            <article class="cart-item">
+                <img
+                    class="product-image"
+                    src="${escapeHTML(image)}"
+                    alt="${escapeHTML(item.name)}"
+                    onerror="this.style.display='none'"
+                >
+
+                <div>
+                    <div class="product-name">
+                        ${escapeHTML(item.name)}
+                    </div>
+
+                    <div class="product-price">
+                        ${formatPrice(price)}
+                    </div>
+
+                    <div class="quantity-control">
+                        <button
+                            type="button"
+                            onclick="changeQuantity('${escapeHTML(item.id)}', 1)"
+                            aria-label="افزایش تعداد"
+                        >+</button>
+
+                        <span>${quantity.toLocaleString("fa-IR")}</span>
+
+                        <button
+                            type="button"
+                            onclick="changeQuantity('${escapeHTML(item.id)}', -1)"
+                            aria-label="کاهش تعداد"
+                        >−</button>
+                    </div>
+
+                    <button
+                        class="remove-button"
+                        type="button"
+                        onclick="removeItem('${escapeHTML(item.id)}')"
+                    >حذف محصول</button>
+                </div>
+
+                <div class="item-total">
+                    ${formatPrice(itemTotal)}
+                </div>
+            </article>
+        `;
+    }).join("");
+
+    document.getElementById("itemCount").textContent =
+        count.toLocaleString("fa-IR");
+
+    document.getElementById("subtotal").textContent = formatPrice(total);
+    document.getElementById("total").textContent = formatPrice(total);
+}
+
+function changeQuantity(id, amount) {
+    const cart = getCart();
+    const item = cart.find(product => String(product.id) === String(id));
+
+    if (!item) return;
+
+    const newQuantity = (Number(item.quantity) || 1) + amount;
+
+    if (newQuantity < 1) {
+        removeItem(id);
+        return;
+    }
+
+    item.quantity = newQuantity;
+    saveCart(cart);
+    renderCart();
+}
+
+function removeItem(id) {
+    const cart = getCart().filter(
+        item => String(item.id) !== String(id)
+    );
+
+    saveCart(cart);
+    renderCart();
+}
+
+document.getElementById("checkoutButton").addEventListener("click", () => {
+    const cart = getCart();
+
+    if (cart.length === 0) {
+        showNotice("سبد خرید شما خالی است.");
+        return;
+    }
+
+    window.location.href = "orders.html";
+});
+
+renderCart();
+</script></body>
 </html>
